@@ -74,20 +74,15 @@ If Resend is not configured the form still validates and rate-limits; submission
   - `Permissions-Policy` denies camera/mic/geolocation, scopes payment to self
 - All third-party hosts are explicitly allow-listed in CSP (Calendly for booking, Resend for outbound, Upstash for limiter).
 
-## Deployment (Vercel)
+## Deployment
 
-The site is designed to deploy unchanged on Vercel's free tier with `bizautofy.com` attached.
+The production site runs on **Cloudflare → Vercel** with **Resend** for outbound email and **Cloudflare Email Routing** for inbound. DNS lives at Cloudflare; the registrar is Squarespace; the GitHub repo (public) auto-deploys to Vercel.
 
-1. **Push to GitHub.** Create a new private repo, then:
-   ```bash
-   git remote add origin git@github.com:<you>/bizautofy.git
-   git push -u origin main
-   ```
-2. **Import on Vercel.** [vercel.com/new](https://vercel.com/new) → select the repo → keep defaults (Framework: Next.js, Root: `bizautofy`).
-3. **Add environment variables** in Project → Settings → Environment Variables. Copy the keys from `.env.example`. Add the same values to **Preview** and **Production** environments.
-4. **Attach the domain.** Project → Settings → Domains → add `bizautofy.com` and `www.bizautofy.com`. Vercel will display the DNS records (A `76.76.21.21` for apex, CNAME `cname.vercel-dns.com` for `www`). Update DNS at your registrar; HTTPS is provisioned automatically.
-5. **Smoke-test contact form.** Submit a real message, confirm it lands at `CONTACT_TO_EMAIL`, and check Vercel → Logs for any rate-limiter or Resend errors.
-6. **Enable Vercel Analytics** (Project → Analytics) and **Speed Insights** for free RUM data without cookies.
+For the full step-by-step deployment runbook, including DNS records, environment variables, lessons learned, troubleshooting, and disaster recovery, see:
+
+**→ [`docs/deployment.md`](./docs/deployment.md)**
+
+That document is the source of truth for operations. This README intentionally stays a quick project intro.
 
 ## Roadmap (post-v1)
 
