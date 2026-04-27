@@ -3,7 +3,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MeshGradient } from "@/components/shared/MeshGradient";
 import { Container } from "@/components/shared/Container";
-import { hero } from "@/lib/content";
+import { brand, hero } from "@/lib/content";
 
 export function Hero() {
   const [before, after] = hero.title.split(hero.highlight);
@@ -25,7 +25,11 @@ export function Hero() {
             {after}
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl text-balance">
+          <p className="mt-6 max-w-2xl font-serif text-xl italic text-foreground/85 text-balance sm:text-2xl">
+            {brand.tagline}
+          </p>
+
+          <p className="mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg text-balance">
             {hero.subtitle}
           </p>
 
