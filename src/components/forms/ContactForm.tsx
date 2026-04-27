@@ -94,17 +94,32 @@ export function ContactForm() {
   return (
     <form action={formAction} className="space-y-5" noValidate>
       <input type="hidden" name="ts" value={ts} />
-      {/* Honeypot field: hidden from users, must remain empty */}
-      <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
-        <label>
-          Website
-          <input
-            name="website"
-            tabIndex={-1}
-            autoComplete="off"
-            defaultValue=""
-          />
-        </label>
+      {/*
+        Honeypot field. Real users never see or interact with it; bots and
+        naive form-filling automation tend to fill every field they can find.
+        Implementation notes:
+        - Field is named `hp_x` (non-semantic) so password managers / browser
+          autofill heuristics do not match it. Crucially, we do NOT label it
+          "Website" — many engines will helpfully fill any field literally
+          labeled "website" with the current page URL, which would create a
+          false positive and silently drop legitimate messages.
+        - Wrapped in a position:absolute, off-screen, zero-size container so
+          it cannot be tab-focused or visually filled.
+        - aria-hidden + tabIndex=-1 keep it out of the accessibility tree.
+        - autoComplete="off" + name designed to defeat heuristic autofill.
+      */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden opacity-0"
+      >
+        <input
+          type="text"
+          name="hp_x"
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+          aria-hidden="true"
+        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
