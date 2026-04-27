@@ -40,7 +40,11 @@ export const contactSchema = z.object({
     .min(10, "Tell us a little more — at least 10 characters.")
     .max(4000, "That is more than we can read at once. Trim it down a bit."),
   // Honeypot: real users leave this empty. Bots tend to fill every field.
-  website: z
+  // Field name intentionally non-semantic so password managers / browser
+  // autofill engines do not match it (many will fill any field literally
+  // labeled "Website" with the current page URL, which would create a false
+  // positive and silently drop the message).
+  hp_x: z
     .string()
     .max(0, "Spam detected.")
     .optional()
