@@ -70,9 +70,13 @@ export default function PricingPage() {
             <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl">
               Three steps.{" "}
               <span className="font-serif italic font-normal gradient-text">
-                One fixed price.
+                Priced to your business.
               </span>
             </h2>
+            <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground">
+              Only Discovery is a fixed price. Build and Run are quoted from
+              your audit — in writing, before any further work.
+            </p>
           </AnimatedSection>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
