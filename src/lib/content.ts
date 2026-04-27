@@ -424,6 +424,7 @@ export interface PricingBand {
   highlighted?: boolean;
 }
 
+export const pricingBuild: PricingBand[] = [
   {
     slug: "foh-essentials",
     icon: Globe2,
