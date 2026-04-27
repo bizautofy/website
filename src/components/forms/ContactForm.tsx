@@ -10,12 +10,12 @@ import { submitContactForm } from "@/app/actions/contact";
 import type { ContactState } from "@/lib/contact-schema";
 import { cn } from "@/lib/utils";
 
-type Plan = "general" | "starter" | "growth" | "pro" | "custom" | "founding";
+type Plan = "general" | "discovery" | "build" | "run" | "custom" | "founding";
 const PLANS: Array<{ value: Plan; label: string }> = [
   { value: "general", label: "General inquiry" },
-  { value: "starter", label: "Starter" },
-  { value: "growth", label: "Growth" },
-  { value: "pro", label: "Pro" },
+  { value: "discovery", label: "Book a Discovery & Audit ($500)" },
+  { value: "build", label: "Talk about a Build" },
+  { value: "run", label: "Retainer / ongoing Run support" },
   { value: "custom", label: "Custom scope" },
   { value: "founding", label: "Founding customer" },
 ];

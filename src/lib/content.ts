@@ -6,17 +6,17 @@
 import type { LucideIcon } from "lucide-react";
 import {
   Globe2,
-  MapPin,
-  Star,
+  HeartHandshake,
   Calendar,
-  Bot,
+  Users,
+  Receipt,
+  Boxes,
   LineChart,
   Search,
   Sparkles,
   ShieldCheck,
   Wallet,
   Clock4,
-  HeartHandshake,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -26,7 +26,8 @@ import {
 export const brand = {
   name: "Bizautofy",
   domain: "bizautofy.com",
-  tagline: "Modern web presence and smart automation for small businesses.",
+  tagline:
+    "Total automation for small businesses — front-of-house and back-office.",
   contactEmail: "hello@bizautofy.com",
   responsePromise: "We reply to every message within one business day.",
 } as const;
@@ -37,10 +38,10 @@ export const brand = {
 
 export const hero = {
   eyebrow: "Founding customer program — limited spots",
-  title: "Look as good online as you are in person.",
-  highlight: "in person",
+  title: "Run on autopilot. Look great while doing it.",
+  highlight: "autopilot",
   subtitle:
-    "Bizautofy gives small businesses a modern web presence and the smart automation behind it — so owners spend less time on tools and more time on customers.",
+    "Bizautofy automates the work that fills an owner's day — customer discovery, bookings, reviews, payments, staff scheduling, bookkeeping, and reporting — so the business runs without you in the middle of it.",
   primaryCta: { label: "Book a free 15-min call", href: "/contact" },
   secondaryCta: { label: "See what we automate", href: "/services" },
   trustStrip: [
@@ -56,13 +57,18 @@ export const hero = {
 
 export const mission = {
   eyebrow: "Our mission",
-  body: "We help local and small businesses look as good online as they are in person — and run on autopilot. Bizautofy combines a modern web presence with smart automation so owners can spend less time on tools and more time on customers.",
-  pull: "If a customer can find you, trust you, and book you in under 60 seconds — we have done our job.",
+  body: "We automate the work that runs a small business — both the customer-facing side (discovery, booking, reviews, communication) and the operational side (staff, finance, inventory, reporting). Owners get back the hours they spend on tools and admin, and a business that keeps running when they step away.",
+  pull: "If your business runs cleanly on the day you take off — we have done our job.",
 } as const;
 
 // ---------------------------------------------------------------------------
-// Services / pillars (used on Home bento grid AND Services page)
+// Services / pillars
+// Two tracks: customer-facing ("front of house") and internal-operations
+// ("back office"), plus one cross-cutting pillar that combines both.
+// Used on the Home bento grid AND the Services page.
 // ---------------------------------------------------------------------------
+
+export type ServiceTrack = "customer" | "internal" | "cross";
 
 export interface Service {
   slug: string;
@@ -73,121 +79,187 @@ export interface Service {
   deliverables: string[];
   tools: string[];
   outcome: string;
+  track: ServiceTrack;
   span?: "default" | "wide" | "tall";
 }
 
 export const services: Service[] = [
+  // -------------------------------------------------------------------------
+  // Track 1 — Customer-facing ("front of house")
+  // -------------------------------------------------------------------------
   {
-    slug: "website-brand",
+    slug: "web-presence",
     icon: Globe2,
-    title: "Website & brand",
+    title: "Web presence & discovery",
     short:
-      "A fast, beautiful site that turns visitors into customers — built once, owned by you.",
-    long: "Most small business websites were built years ago and never updated. We start with a clean rebuild on modern tooling — fast loading, mobile-first, accessible — wired to your real services, locations, and call-to-actions. You own the domain, the hosting, and the code.",
+      "A fast, beautiful site and a Google Business Profile that actually shows up — built once, owned by you.",
+    long: "Most small business websites were built years ago, and most Google Business Profiles were never optimized past adding hours. We rebuild your site on modern tooling — fast, mobile-first, accessible — and rebuild your GBP so neighbors searching nearby actually find you. The two are wired together: same services, same hours, same call-to-actions, working in lockstep.",
     deliverables: [
       "Modern, responsive 5–10 page site",
       "Clear hero, services, location, hours, and contact",
-      "On-page SEO + structured data (LocalBusiness schema)",
+      "On-page SEO + LocalBusiness structured data",
+      "Full Google Business Profile rebuild and weekly post schedule",
+      "Local citation cleanup across 30+ directories (NAP consistency)",
       "Privacy-friendly analytics, no cookie banners required",
-      "Hosted on Vercel or Cloudflare with HTTPS by default",
     ],
-    tools: ["Next.js", "Tailwind", "Vercel", "Cloudflare"],
+    tools: ["Next.js", "Tailwind", "Google Business Profile", "Vercel"],
     outcome:
-      "A site that loads in under a second, ranks for your name and services, and converts foot traffic into paying customers.",
+      "A site that loads in under a second and a profile that out-converts the competition — so 'near me' searches turn into walk-ins and calls.",
+    track: "customer",
     span: "wide",
   },
   {
-    slug: "local-seo",
-    icon: MapPin,
-    title: "Local SEO & Google Business",
+    slug: "customer-relationships",
+    icon: HeartHandshake,
+    title: "Customer relationships & CRM",
     short:
-      "Show up first when neighbors search — with a Google Business Profile that actually performs.",
-    long: "Google Business Profile (GBP) is where most local discovery happens — and most owners have never optimized it past adding hours. We rewrite categories, services, and FAQ entries; add weekly posts; and connect GBP to your site so calls, directions, and bookings all funnel back.",
+      "Capture every lead, answer every question, and turn one-time customers into repeats — automatically.",
+    long: "Reviews, missed calls, DMs, and form fills are all leads — and most slip through the cracks because there's no one to answer at 11pm on a Sunday. We set up a single pipeline that captures everything, an AI assistant that answers and qualifies in your voice, automated review requests that fire after the right events, and retention campaigns that bring customers back.",
     deliverables: [
-      "Full GBP audit and optimization",
-      "Categories, services, attributes, and FAQ refresh",
-      "Weekly post + photo schedule (first month done-for-you)",
-      "Local citation cleanup (NAP consistency across 30+ directories)",
-      "Monthly rank tracking for your key terms",
+      "Unified CRM pipeline (web forms, calls, SMS, DMs, GBP messages)",
+      "Custom AI chat trained on your services, FAQs, and policies",
+      "Auto-reply to missed calls with a booking link",
+      "Branded review request flow (SMS + email) with private feedback gate",
+      "Win-back and 'we miss you' campaigns triggered by inactivity",
+      "Owner alerts on every new lead and review",
     ],
-    tools: ["Google Business Profile", "Local rank tracker", "Schema.org"],
+    tools: ["OpenAI", "Twilio", "Resend", "GBP API"],
     outcome:
-      "More map-pack appearances, more 'near me' calls, and a profile that out-converts the competition.",
-  },
-  {
-    slug: "reviews-reputation",
-    icon: Star,
-    title: "Reviews & reputation",
-    short:
-      "Turn happy customers into a steady stream of 5-star reviews — automatically.",
-    long: "Reviews are the modern word of mouth. Happy customers will leave them — but only if you ask, at the right time, in the right way. We set up a private feedback step (so unhappy customers reach you, not Google) and an automated review request triggered by checkout, booking completion, or invoice payment.",
-    deliverables: [
-      "Branded review request flow (SMS + email)",
-      "Private feedback gate to surface issues before public reviews",
-      "Auto-trigger from checkout / booking / invoice paid events",
-      "Review wall on your website (live, structured-data tagged)",
-      "Owner alerts on every new review",
-    ],
-    tools: ["Twilio / Resend", "GBP API", "Yelp", "Webhook automation"],
-    outcome:
-      "10–30 new reviews in the first 90 days for most businesses, and a rating that compounds month over month.",
+      "Faster response times, more 5-star reviews, and a steady stream of repeat customers — without you typing a single follow-up.",
+    track: "customer",
   },
   {
     slug: "booking-payments",
     icon: Calendar,
-    title: "Booking & payments",
+    title: "Booking, payments & invoicing",
     short:
-      "Let customers book, pay, and reschedule themselves — 24/7, on every device.",
-    long: "If your phone has to ring for someone to give you money, you are leaking revenue every night and weekend. We wire up online booking, deposit collection, and payment so customers can self-serve in under a minute — and your calendar stays organized.",
+      "Let customers book, pay, reschedule, and get receipts themselves — 24/7.",
+    long: "If your phone has to ring for someone to give you money, you are leaking revenue every night and weekend. We wire up online booking, deposit collection, recurring billing, and automated invoicing so customers self-serve in under a minute, your calendar stays organized, and the books reconcile themselves.",
     deliverables: [
       "Online booking embedded on your site and GBP",
-      "Deposits or full payment via Stripe",
+      "Deposits, full payment, or recurring billing via Stripe",
+      "Automated invoicing with payment reminders",
       "Calendar sync to Google / Outlook",
-      "Automated SMS + email reminders (cuts no-shows)",
+      "Automated SMS + email confirmations and reminders",
       "Cancellation and reschedule self-service",
     ],
     tools: ["Stripe", "Google Calendar", "Cal.com / SimplyBook"],
     outcome:
-      "Bookings made while you sleep, fewer no-shows, and faster, friendlier checkout.",
-    span: "tall",
+      "Bookings made while you sleep, fewer no-shows, faster checkout, and invoices that pay themselves.",
+    track: "customer",
   },
+
+  // -------------------------------------------------------------------------
+  // Track 2 — Internal operations ("back office")
+  // -------------------------------------------------------------------------
   {
-    slug: "ai-followups",
-    icon: Bot,
-    title: "AI chat & follow-ups",
+    slug: "staff-scheduling",
+    icon: Users,
+    title: "Staff & scheduling",
     short:
-      "Answer every inquiry instantly — even at 11pm on a Sunday.",
-    long: "An AI assistant trained on your services, hours, and pricing answers common questions, qualifies leads, and books appointments. When a question is too nuanced, it hands off to you with full context — no copy-pasting, no lost leads.",
+      "Build the schedule once, let staff swap shifts and request time off themselves — no more group texts.",
+    long: "Scheduling, shift swaps, time-off requests, and labor-cost tracking eat hours of every owner's week. We replace the spreadsheet (or the group text) with a self-service tool your team can use from their phones — and tie it to payroll so hours flow through automatically.",
     deliverables: [
-      "Custom-trained chat trained on your site, FAQs, and policies",
-      "Web widget + WhatsApp / SMS / Instagram DM channels",
-      "Lead qualification and structured handoff to your inbox",
-      "Auto-reply to missed calls with a booking link",
-      "Weekly transcript review to keep answers sharp",
+      "Self-service schedule with shift swap and pickup",
+      "Time-off requests with one-tap approvals",
+      "Clock-in / clock-out from phone with geofencing",
+      "Labor-cost dashboard against revenue (target % alerts)",
+      "Automated reminders before each shift",
+      "Hours export to payroll on schedule",
     ],
-    tools: ["OpenAI", "Twilio", "Make.com", "Custom"],
+    tools: ["When I Work / Homebase / 7shifts", "Twilio", "Custom"],
     outcome:
-      "Faster response times, fewer ghosted inquiries, and a clear paper trail of every conversation.",
+      "A schedule that builds itself, a team that takes care of its own swaps, and labor costs you can actually see weekly.",
+    track: "internal",
   },
   {
-    slug: "insights-dashboard",
-    icon: LineChart,
-    title: "Insights dashboard",
+    slug: "finance-bookkeeping",
+    icon: Receipt,
+    title: "Finance & bookkeeping",
     short:
-      "One simple weekly view: leads, bookings, reviews, and revenue.",
-    long: "Most owners have data scattered across a dozen apps. We build one weekly dashboard that pulls from GBP, Stripe, your booking tool, and reviews — so you know in 30 seconds whether last week was up or down, and why.",
+      "Stripe, bank, and invoices flow into QuickBooks or Xero on their own — books reconciled, taxes ready.",
+    long: "Most owners pay an accountant by the hour to sort transactions that should sort themselves. We connect your sales, bank account, and expenses to QuickBooks or Xero with rule-based categorization, automated reconciliation, and clean monthly close — so come tax time, you are not scrambling.",
+    deliverables: [
+      "QuickBooks or Xero sync (Stripe, bank, POS, invoices)",
+      "Automated transaction categorization with custom rules",
+      "Monthly reconciliation and close",
+      "Receipt capture by email or photo",
+      "Payroll prep handoff to Gusto / Rippling",
+      "Quarterly tax-ready P&L, balance sheet, and cash-flow report",
+    ],
+    tools: ["QuickBooks", "Xero", "Stripe", "Gusto"],
+    outcome:
+      "Books that match your bank account every Monday morning, a clean trail for your accountant, and a much smaller bill at tax time.",
+    track: "internal",
+  },
+  {
+    slug: "inventory-vendor",
+    icon: Boxes,
+    title: "Inventory & vendor management",
+    short:
+      "Stock levels track themselves, reorders fire automatically, and your supplier orders write themselves.",
+    long: "Stockouts cost sales; over-ordering ties up cash. We connect your point-of-sale and inventory system to reorder rules and your suppliers — so when stock crosses a threshold, the next purchase order is ready to send (or sends itself), with the right SKUs and quantities based on your sales velocity.",
+    deliverables: [
+      "Live stock levels synced from POS / e-commerce",
+      "Reorder rules with safety stock and lead-time-aware triggers",
+      "Auto-drafted purchase orders to your suppliers",
+      "Supplier price-change and back-order alerts",
+      "Top SKU and dead-stock reporting",
+      "Multi-location stock balancing (if applicable)",
+    ],
+    tools: ["Square / Shopify / Toast", "EDI / supplier APIs", "Custom"],
+    outcome:
+      "No more 'we're out' moments, less cash tied up in slow stock, and purchase orders that just appear in your inbox already filled in.",
+    track: "internal",
+  },
+
+  // -------------------------------------------------------------------------
+  // Cross-cutting — pulls signal from both tracks into one owner view
+  // -------------------------------------------------------------------------
+  {
+    slug: "owner-intelligence",
+    icon: LineChart,
+    title: "Owner intelligence",
+    short:
+      "One weekly view of the whole business — customer metrics and operational health, in one place.",
+    long: "Most owners have data scattered across a dozen apps and no time to log into any of them. We build one weekly dashboard that combines the customer side (leads, bookings, reviews, GBP impressions, revenue) with the operational side (labor cost %, gross margin, cash flow, top SKUs, inventory turns) — so you know in 30 seconds whether last week was up or down, and exactly why.",
     deliverables: [
       "Weekly emailed dashboard (no logins required)",
-      "Leads, bookings, revenue, reviews, GBP impressions",
+      "Customer KPIs: leads, bookings, revenue, reviews, GBP impressions",
+      "Ops KPIs: labor %, gross margin, cash on hand, top / dead SKUs",
       "Trend lines vs. previous 4 weeks",
+      "Anomaly alerts (sudden drops, review spikes, cash-flow risk)",
       "Optional Looker Studio / Notion view for deeper dives",
-      "Anomaly alerts (sudden drops, review spikes)",
     ],
-    tools: ["Looker Studio", "Stripe", "GBP Insights API"],
+    tools: ["Looker Studio", "Stripe", "QuickBooks", "GBP Insights API"],
     outcome:
-      "A 30-second weekly read on the health of your business — without opening a single dashboard.",
+      "A 30-second weekly read on the health of your whole business — front of house and back office, on one screen.",
+    track: "cross",
+    span: "wide",
   },
 ];
+
+// Convenience accessors so components don't have to filter inline.
+export const customerServices = services.filter((s) => s.track === "customer");
+export const internalServices = services.filter((s) => s.track === "internal");
+export const crossServices = services.filter((s) => s.track === "cross");
+
+export const serviceTracks = [
+  {
+    id: "customer" as const,
+    label: "Front of house",
+    eyebrow: "Customer-facing automation",
+    description:
+      "Get found by neighbors, capture every lead, answer instantly, take payment, and bring customers back — all without you typing.",
+  },
+  {
+    id: "internal" as const,
+    label: "Back office",
+    eyebrow: "Internal operations automation",
+    description:
+      "Schedule staff, reconcile books, manage inventory, and prep payroll — the work that quietly eats your week, running on its own.",
+  },
+] as const;
 
 // ---------------------------------------------------------------------------
 // How it works
@@ -203,35 +275,36 @@ export interface Step {
 export const howItWorks: Step[] = [
   {
     number: "01",
-    title: "Audit",
-    body: "We start with a free 30-minute audit of your site, Google Business Profile, reviews, and current tools. You get a written scorecard — yours to keep, even if we never work together.",
+    title: "Discovery",
+    body: "Every engagement starts with a paid Discovery & Automation Audit ($500, refundable into Build). We shadow your operation, document customer-facing and back-office systems, and deliver a written audit, a prioritized automation roadmap, and a fixed-price proposal for everything that follows. Want a free 15-minute fit-check first? Book it on the contact page.",
     bullets: [
-      "Site speed, SEO, and accessibility scan",
-      "Google Business Profile gap analysis",
-      "Review velocity and response audit",
-      "Tool stack inventory and waste estimate",
+      "90-minute kickoff and on-site / virtual shadowing",
+      "Written audit of front-of-house and back-office systems",
+      "Prioritized automation roadmap with effort and ROI estimates",
+      "Fixed-price proposal for Build and Run before any further work",
     ],
   },
   {
     number: "02",
     title: "Build",
-    body: "Pick a package or a custom scope. We rebuild your presence, wire up the automations, and integrate with the tools you already use. Most builds ship in 2–4 weeks.",
+    body: "We execute the proposal at the price we quoted. Modern site, GBP, customer-facing automations, back-office integrations — exactly what we scoped, on a timeline we agreed at kickoff. Most builds ship in 2–6 weeks. 50% on kickoff, 50% on handoff.",
     bullets: [
-      "Modern site, GBP refresh, review flow",
-      "Booking, payments, and AI chat",
+      "Modern site, GBP refresh, review and CRM flows",
+      "Booking, payments, invoicing, and AI chat",
+      "Staff scheduling, bookkeeping sync, inventory automation",
       "Done-for-you migration from old vendors",
       "Owner-friendly training video at handoff",
     ],
   },
   {
     number: "03",
-    title: "Automate & grow",
-    body: "We monitor performance, ship improvements monthly, and send a weekly dashboard. You focus on customers; we keep the lights on, the rankings climbing, and the reviews coming in.",
+    title: "Run",
+    body: "After handoff we monitor performance, ship improvements monthly, and send a weekly dashboard combining customer and ops metrics. Founding-customer rate locks at signing for 24 months and is capped to U.S. CPI forever after — no surprise hikes, ever.",
     bullets: [
       "Monthly improvement sprint (1–2 ships / month)",
       "Quarterly strategy review",
       "Real human support, same-day reply",
-      "Cancel or pause any time",
+      "Cancel any time with 30 days' notice",
     ],
   },
 ];
@@ -281,102 +354,211 @@ export const stats: Stat[] = [
 
 export const foundingProgram = {
   badge: "Founding customer",
-  title: "Be one of our first 10 — and never pay sticker again.",
-  body: "Bizautofy is new on purpose. We are taking on a small, hand-picked group of founding customers in exchange for honest feedback and (eventually) a public case study. In return, you get charter pricing for life, priority on every ship, and direct access to the founder.",
+  title: "Be one of our first 10. Lock the rate that holds.",
+  body: "Bizautofy is new on purpose. We are taking on a small, hand-picked group of founding customers in exchange for honest feedback and (eventually) a public case study. In return, your retainer rate is locked at signing for 24 months, capped at inflation forever after, and your original scope stays at the price you signed at — for as long as we run together.",
   perks: [
     {
       icon: Wallet,
-      title: "Charter pricing — locked",
-      body: "Whatever rate you start at is the rate you keep. Forever. Even when public prices double.",
+      title: "Rate locked for 24 months",
+      body: "The retainer rate you sign at is the rate you pay for two full years. No surprise hikes, no fine print.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "CPI cap forever after",
+      body: "After 24 months we adjust only by U.S. BLS Urban CPI. Never more. We put it in the contract.",
     },
     {
       icon: Clock4,
-      title: "Priority on every release",
-      body: "Founders get the new automations, integrations, and dashboards weeks before everyone else.",
+      title: "Original scope, original price",
+      body: "Whatever we built and run for you at signing stays at that price for as long as we work together. New scope is quoted at current rates — but you always pay the founding rate for that band.",
     },
     {
       icon: HeartHandshake,
       title: "Direct line to the founder",
       body: "No support tier, no chatbot. You text the person who built it — and you get an answer the same day.",
     },
-    {
-      icon: ShieldCheck,
-      title: "30-day money back",
-      body: "If the first month is not the best money you spent on your business, we refund it. No essay, no awkwardness.",
-    },
   ],
 } as const;
 
 // ---------------------------------------------------------------------------
-// Pricing
+// Pricing — three-step engagement
+//   01  Discovery  →  fixed price ($500), the only fixed price on the site
+//   02  Build      →  custom-quoted from Discovery; ranges shown to anchor
+//   03  Run        →  monthly retainer scoped to what was built
+//
+// Why it's structured this way: every small business has a different stack
+// (Square vs Toast, QuickBooks vs Xero, one location vs three). Selling
+// shrink-wrapped tiers either undercharges or overcharges almost everyone.
+// The audit is the product entry point. Everything else is custom.
 // ---------------------------------------------------------------------------
 
-export interface PricingTier {
+export const pricingDiscovery = {
+  badge: "Step 01 — Discovery",
+  name: "Discovery & Automation Audit",
+  price: "$500",
+  priceNote: "one-time, refundable into Build",
+  duration: "1 week turnaround",
+  promise:
+    "100% credited toward Build if you proceed within 30 days. 30-day money back if the audit alone isn't worth $500.",
+  body: "We don't quote Build or Run numbers without studying the business first. Discovery is the entry point and the only fixed price on this page. Everything that follows is custom-scoped from what we find — and you see the exact dollar figures in writing before any further work begins.",
+  deliverables: [
+    "90-minute kickoff and on-site / virtual shadowing",
+    "Written audit of customer-facing systems (site, GBP, reviews, booking, comms)",
+    "Written audit of back-office systems (POS, accounting, scheduling, inventory)",
+    "Prioritized automation roadmap with effort and ROI estimates",
+    "Fixed-price proposal for Build (one-time) and Run (monthly)",
+    "Yours to keep — even if you never engage us further",
+  ],
+  cta: { label: "Book my Discovery", href: "/contact?plan=discovery" },
+} as const;
+
+export interface PricingBand {
+  slug: string;
+  icon: LucideIcon;
   name: string;
   tagline: string;
-  setup: string;
-  monthly: string;
-  founderPrice?: string;
-  features: string[];
-  cta: { label: string; href: string };
+  priceRange: string;
+  rangeLabel: string;
+  bestFor: string;
+  includes: string[];
   highlighted?: boolean;
 }
 
-export const pricing: PricingTier[] = [
+export const pricingBuild: PricingBand[] = [
   {
-    name: "Starter",
-    tagline: "Presence reset.",
-    setup: "$1,500 one-time",
-    monthly: "$99/mo",
-    founderPrice: "$49/mo for founders",
-    features: [
-      "Modern 5-page website + hosting",
-      "Google Business Profile optimization",
-      "On-page SEO + structured data",
-      "Basic review request flow",
-      "Weekly performance email",
+    slug: "foh-essentials",
+    icon: Globe2,
+    name: "Front-of-house essentials",
+    tagline: "Get found and look great online — first.",
+    priceRange: "$2,000 – $4,000",
+    rangeLabel: "typical Build",
+    bestFor:
+      "Owners whose immediate problem is presence and discovery. Often Phase 1 of a larger automation plan.",
+    includes: [
+      "Modern responsive 5–10 page website",
+      "Google Business Profile rebuild + on-page SEO",
+      "Local citation cleanup across 30+ directories",
+      "Basic review request flow (SMS or email)",
+      "Privacy-friendly analytics, no cookie banners",
     ],
-    cta: { label: "Start with Starter", href: "/contact?plan=starter" },
   },
   {
-    name: "Growth",
-    tagline: "Presence + automation.",
-    setup: "$3,500 one-time",
-    monthly: "$249/mo",
-    founderPrice: "$149/mo for founders",
-    features: [
-      "Everything in Starter",
-      "Online booking + Stripe payments",
-      "SMS + email review automation",
-      "Local citation cleanup (30+ directories)",
-      "Monthly improvement sprint",
+    slug: "customer-automation",
+    icon: HeartHandshake,
+    name: "Customer-facing automation",
+    tagline: "Win and keep more customers, hands-off.",
+    priceRange: "$5,000 – $9,000",
+    rangeLabel: "typical Build",
+    bestFor:
+      "Owners with a working presence who lose money to missed calls, manual booking, slow review velocity, and one-time customers who don't return.",
+    includes: [
+      "Everything in Front-of-house essentials",
+      "Online booking + Stripe payments + automated invoicing",
+      "AI chat (web + SMS) trained on your services",
+      "Unified CRM pipeline with auto-replies and follow-ups",
+      "Branded review pipeline with private feedback gate",
+      "Win-back and retention campaigns",
     ],
-    cta: { label: "Choose Growth", href: "/contact?plan=growth" },
     highlighted: true,
   },
   {
-    name: "Pro",
-    tagline: "Full operations.",
-    setup: "$6,500 one-time",
-    monthly: "$549/mo",
-    founderPrice: "$349/mo for founders",
-    features: [
-      "Everything in Growth",
-      "Custom AI chat across web, SMS, IG",
-      "Looker Studio insights dashboard",
-      "Quarterly strategy review with founder",
-      "Up to 10 hrs/mo of bespoke automation work",
+    slug: "total-automation",
+    icon: LineChart,
+    name: "Total automation",
+    tagline: "Front of house + back office, on autopilot.",
+    priceRange: "$10,000 – $25,000+",
+    rangeLabel: "typical Build",
+    bestFor:
+      "Owners who want the whole business — customer journey and internal operations — running without them in the middle of it. Range depends on POS / accounting stack and number of locations.",
+    includes: [
+      "Everything in Customer-facing automation",
+      "Bookkeeping sync (QuickBooks / Xero) with automated reconciliation",
+      "Staff scheduling, shift swap, and time-off self-service",
+      "Inventory tracking + supplier reorder automation",
+      "Owner dashboard combining customer and ops KPIs",
+      "Done-for-you data migration from legacy tools",
     ],
-    cta: { label: "Choose Pro", href: "/contact?plan=pro" },
   },
 ];
 
-export const pricingNotes = [
-  "All plans are month-to-month — cancel any time.",
-  "First 10 founding customers get charter pricing locked in for life.",
-  "Setup is paid once at kickoff. Monthly starts after handoff.",
-  "Need something different? We do custom scopes — just ask.",
+export const pricingRun: PricingBand[] = [
+  {
+    slug: "presence-care",
+    icon: ShieldCheck,
+    name: "Presence Care",
+    tagline: "Keep the lights on. Keep the rankings climbing.",
+    priceRange: "$99 – $199 / mo",
+    rangeLabel: "typical retainer",
+    bestFor:
+      "Front-of-house essentials builds. Hosting, monitoring, content updates, GBP posts, monthly summary email.",
+    includes: [
+      "Hosting, SSL, security headers, uptime monitoring",
+      "Monthly content / GBP post updates",
+      "Performance and SEO drift monitoring",
+      "Monthly summary email with the numbers that matter",
+      "Real human support, same-day reply",
+    ],
+  },
+  {
+    slug: "customer-operations",
+    icon: HeartHandshake,
+    name: "Customer Operations",
+    tagline: "Tune the customer machine every month.",
+    priceRange: "$349 – $599 / mo",
+    rangeLabel: "typical retainer",
+    bestFor:
+      "Customer-facing automation builds. Continuous tuning of the review pipeline, AI chat, and CRM, plus a monthly improvement sprint.",
+    includes: [
+      "Everything in Presence Care",
+      "AI chat upkeep and prompt tuning",
+      "Review pipeline tuning and response oversight",
+      "CRM hygiene and segmentation updates",
+      "Monthly improvement sprint (1–2 ships / month)",
+      "Weekly dashboard with customer KPIs",
+    ],
+    highlighted: true,
+  },
+  {
+    slug: "full-operations",
+    icon: LineChart,
+    name: "Full Operations",
+    tagline: "We run the whole automation layer.",
+    priceRange: "$749 – $1,499+ / mo",
+    rangeLabel: "typical retainer",
+    bestFor:
+      "Total automation builds. Continuous oversight of bookkeeping reconciliation, scheduling rules, inventory thresholds, vendor automation, and your custom dashboard.",
+    includes: [
+      "Everything in Customer Operations",
+      "Bookkeeping reconciliation oversight",
+      "Scheduling rule updates and labor-cost tuning",
+      "Inventory threshold and vendor automation upkeep",
+      "Custom owner dashboard maintenance",
+      "Quarterly strategy review with the founder",
+    ],
+  },
 ];
+
+export const pricingPrinciples = {
+  eyebrow: "Why we don't quote shrink-wrapped totals",
+  title: "Custom-built means custom-priced.",
+  body: [
+    "Every small business runs on a different stack. Square versus Toast. QuickBooks versus Xero. One location versus three. Four employees versus eighteen. The integration depth — and the price — depends entirely on what we find inside the business, not on what tier you click on a website.",
+    "So we sell the audit, not the answer. Discovery is the only fixed price on this page. From there, you get a written, fixed-price proposal for Build and Run. You always know the number before any further work begins.",
+    "The ranges above are real — they cover most engagements at our practice scale. If your situation falls outside them, we will tell you in the audit, with the math to back it.",
+  ],
+} as const;
+
+export const foundingGuarantee = {
+  eyebrow: "Founding-customer guarantee",
+  title: "The price you sign at is the price that holds.",
+  bullets: [
+    "Your retainer rate is locked at signing for 24 months — no rate hikes, ever.",
+    "After 24 months, we adjust only by U.S. BLS Urban CPI. Never more. It is in the contract.",
+    "Your original scope stays at your original price for as long as we run together.",
+    "New automations and new locations are quoted at current rates — but you always pay the founding-customer rate for that band.",
+    "30-day money back on Discovery. Cancel Run any time with 30 days' notice.",
+  ],
+} as const;
 
 // ---------------------------------------------------------------------------
 // FAQ
@@ -390,31 +572,43 @@ export interface Faq {
 export const faqs: Faq[] = [
   {
     q: "How is Bizautofy different from a freelance web designer?",
-    a: "A freelancer ships a site and disappears. Bizautofy is an ongoing partner — we ship the site, then run the SEO, reviews, booking, and automation that actually drive revenue. You get a small team's output for less than the cost of one part-time hire.",
+    a: "A freelancer ships a site and disappears. Bizautofy is an ongoing partner — we ship the site, then run the SEO, reviews, booking, and customer-facing automation that drive revenue, and we automate your back office (scheduling, books, inventory, reporting) so the business runs without you in the middle of it. You get a small team's output for less than the cost of one part-time hire.",
   },
   {
-    q: "Do I have to switch tools? I already use Square / Toast / Acuity.",
-    a: "No. We integrate with the tools you already use whenever possible. The goal is to make your existing stack work harder, not force you onto ours.",
+    q: "Is Bizautofy just websites and SEO?",
+    a: "No — that is the front of the house. Bizautofy automates the back office too: bookkeeping, staff scheduling, inventory, vendor orders, and a single dashboard that combines customer metrics with operational health. The website is the most visible piece, but most of the value shows up in the hours an owner gets back every week.",
   },
   {
-    q: "How long does it take to launch?",
-    a: "Starter usually ships in 2 weeks. Growth and Pro take 3–4 weeks. We send weekly Loom updates so you always know exactly where things stand.",
+    q: "Why don't you publish flat package prices?",
+    a: "Because automating a small business is not a flat-priced product — it is an integration. Two coffee shops on the same block can have different POS systems, different bookkeeping software, different staff size, different inventory practices. Selling them the same shrink-wrapped tier would mean either undercharging one or overcharging the other. Discovery is the only fixed price on this site; everything else is scoped to what we find, with the exact dollar figures in writing before any further work begins.",
   },
   {
-    q: "Who owns the website and the data?",
-    a: "You do. Domain, hosting account, content, and customer data are all in your name from day one. If you ever leave, you walk out with everything.",
+    q: "Why is Discovery paid? Other agencies do it for free.",
+    a: "Free audits attract tire-kickers and reward fast, generic templates. A paid Discovery means we spend a real week studying your business — both the customer-facing side and the operational side — and you walk away with a written audit, a prioritized roadmap, and a fixed-price proposal you can keep, even if you never engage us further. We refund the $500 if the audit alone isn't worth it, and credit it 100% toward Build if you proceed within 30 days.",
+  },
+  {
+    q: "How does founding-customer pricing work?",
+    a: "Whatever retainer rate you sign at is locked for 24 months — no hikes. After 24 months, we adjust only by U.S. BLS Urban CPI, never more. Your original scope stays at the original price for as long as we run together. If your business grows and you add automations, the new work is quoted at then-current rates — but you always pay the founding-customer rate for that band. Cancel any time with 30 days' notice.",
+  },
+  {
+    q: "Do I have to switch tools? I already use Square / Toast / QuickBooks / Acuity.",
+    a: "No. We integrate with the tools you already use whenever possible — POS, booking, accounting, payroll, scheduling. The goal is to make your existing stack work harder and talk to itself, not force you onto ours.",
+  },
+  {
+    q: "How long does an engagement take?",
+    a: "Discovery is one week. Build is typically 2–6 weeks depending on shape — Front-of-house essentials is fastest; Total automation runs longer for complex multi-location operations. Run starts the month after handoff. We send weekly Loom updates throughout Build so you always know exactly where things stand.",
+  },
+  {
+    q: "Who owns the website, the data, and the automations?",
+    a: "You do. Domain, hosting account, content, customer data, and the workflow automations themselves all live in your name from day one. If you ever leave, you walk out with everything still working.",
   },
   {
     q: "What if I am not happy?",
-    a: "30-day money back, no essay required. After that, you can pause or cancel monthly with 30 days' notice. We are not in the business of trapping anyone.",
-  },
-  {
-    q: "Why are you offering founding pricing?",
-    a: "We are new and we know it. We would rather take on 10 perfect founding customers at half price than 50 random clients at full price. In exchange for charter pricing, founders give honest feedback and (eventually) a public case study.",
+    a: "30-day money back on Discovery, no essay required. After Build, you can pause or cancel Run monthly with 30 days' notice. We are not in the business of trapping anyone.",
   },
   {
     q: "Do you work with businesses outside the US?",
-    a: "We work with English-speaking owners worldwide. Most automations (Stripe, GBP, Calendly, Twilio) work globally — we will flag any region-specific gaps in the audit.",
+    a: "We work with English-speaking owners worldwide. Most automations (Stripe, GBP, Calendly, Twilio, QuickBooks / Xero) work globally — we will flag any region-specific gaps in the audit.",
   },
 ];
 
@@ -427,7 +621,7 @@ export const about = {
     title: "Why I built Bizautofy",
     body: [
       "I have spent years building software for large companies and watching small business owners — the people who actually keep neighborhoods alive — get sold expensive, complicated tools they never have time to use.",
-      "Bizautofy is the opposite. It is a small, opinionated set of services that combine a great website, a working Google Business Profile, automatic reviews, online booking, and an AI assistant — all integrated, all measurable, all owned by you.",
+      "Bizautofy is the opposite. It is one integrated automation layer that runs both sides of a small business — the front of house (website, Google Business Profile, reviews, booking, customer comms) and the back office (staff scheduling, bookkeeping, inventory, reporting). All measurable, all owned by you.",
       "We are deliberately small. We pick our customers carefully, ship weekly, and answer the phone. If that sounds like the kind of partner you have been looking for, let's talk.",
     ],
     signoff: "— The Bizautofy team",
@@ -457,18 +651,18 @@ export const about = {
   methodology: [
     {
       icon: Search,
-      title: "Start with a free audit",
-      body: "30-minute call, written scorecard, yours to keep. No sales pressure.",
+      title: "Discovery comes first",
+      body: "Every engagement begins with a paid Discovery — a written audit covering customer-facing and back-office systems, plus a fixed-price proposal you keep. No shrink-wrapped tiers, no surprise totals.",
     },
     {
       icon: Sparkles,
       title: "Ship in small slices",
-      body: "Weekly demos. You see progress every Friday and can redirect at any point.",
+      body: "Weekly demos. You see progress every Friday and can redirect at any point during Build.",
     },
     {
       icon: LineChart,
       title: "Prove it with data",
-      body: "Every change is tied to a number we agreed on at kickoff. We report on it weekly.",
+      body: "Every change is tied to a number we agreed on at kickoff. We report on it weekly during Run.",
     },
   ],
 } as const;

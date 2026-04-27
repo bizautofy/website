@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { brand } from "@/lib/content";
+import { brand, hero } from "@/lib/content";
 
 // Route segment config
 export const runtime = "edge";
@@ -8,6 +8,11 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OpengraphImage() {
+  // Drive the headline from the Hero copy so the social card never drifts
+  // out of sync with the site. Splits on the highlighted phrase to keep the
+  // same italic-gradient treatment.
+  const [headlineBefore, headlineAfter] = hero.title.split(hero.highlight);
+
   return new ImageResponse(
     (
       <div
@@ -63,7 +68,7 @@ export default async function OpengraphImage() {
               flexWrap: "wrap",
             }}
           >
-            Look as good online as you are{" "}
+            {headlineBefore}
             <span
               style={{
                 background: "linear-gradient(120deg,#a78bfa,#c4b5fd,#ffb84c)",
@@ -71,11 +76,11 @@ export default async function OpengraphImage() {
                 color: "transparent",
                 fontStyle: "italic",
                 fontWeight: 600,
-                marginLeft: 16,
               }}
             >
-              in person.
+              {hero.highlight}
             </span>
+            {headlineAfter}
           </div>
         </div>
 

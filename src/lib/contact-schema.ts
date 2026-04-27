@@ -31,7 +31,7 @@ export const contactSchema = z.object({
     .optional()
     .or(z.literal("")),
   plan: z
-    .enum(["starter", "growth", "pro", "custom", "founding", "general"])
+    .enum(["discovery", "build", "run", "custom", "founding", "general"])
     .optional()
     .default("general"),
   message: z
