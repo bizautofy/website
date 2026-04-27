@@ -18,19 +18,20 @@ export function CTA() {
                 More time on customers.
               </span>
             </h2>
-            <p className="mx-auto mt-5 max-w-lg text-base text-muted-foreground sm:text-lg">
-              Free 30-minute audit. Written scorecard you keep — even if we
-              never work together.
+            <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
+              Free 15-min fit-check, no commitment. If we&apos;re a fit,
+              Discovery is your first deliverable — a written audit and a
+              fixed-price plan, in one week.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button asChild size="xl">
                 <Link href="/contact">
-                  Book my free audit
+                  Book a free 15-min call
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
               <Button asChild size="xl" variant="ghost">
-                <Link href="/services">Explore services</Link>
+                <Link href="/pricing">See how pricing works</Link>
               </Button>
             </div>
           </div>
