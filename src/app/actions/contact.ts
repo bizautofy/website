@@ -90,6 +90,7 @@ export async function submitContactForm(
   // Anti-bot: instant submits (< 1.5s after render) are almost always bots.
   const ts = Number(formData.get("ts"));
   if (Number.isFinite(ts) && ts > 0 && Date.now() - ts < 1500) {
+    console.info("[contact] dropped: anti-bot timestamp (instant submit)");
     return { ok: true, message: "Thanks — we'll be in touch shortly." };
   }
 
@@ -99,7 +100,7 @@ export async function submitContactForm(
     business: formData.get("business"),
     plan: formData.get("plan"),
     message: formData.get("message"),
-    website: formData.get("website"),
+    hp_x: formData.get("hp_x"),
     ts: formData.get("ts"),
   });
 
@@ -121,7 +122,8 @@ export async function submitContactForm(
   const payload = parsed.data;
 
   // Honeypot: pretend success so bots don't retry.
-  if (payload.website && payload.website.length > 0) {
+  if (payload.hp_x && payload.hp_x.length > 0) {
+    console.info("[contact] dropped: honeypot tripped");
     return { ok: true, message: "Thanks — we'll be in touch shortly." };
   }
 
@@ -129,6 +131,7 @@ export async function submitContactForm(
   const ip = await getClientIp();
   const limit = await contactLimiter.limit(ip);
   if (!limit.success) {
+    console.info("[contact] dropped: rate limit");
     return {
       ok: false,
       message:
@@ -138,6 +141,9 @@ export async function submitContactForm(
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
+    console.warn(
+      `[contact] RESEND_API_KEY not set; NODE_ENV=${process.env.NODE_ENV}`
+    );
     // Dev fallback: log a redacted preview to the server console only.
     // PII (full email/message) is NEVER logged.
     if (process.env.NODE_ENV !== "production") {
@@ -164,7 +170,7 @@ export async function submitContactForm(
     const subject = `New Bizautofy inquiry — ${payload.name}${
       payload.business ? ` (${payload.business})` : ""
     }`;
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: FROM,
       to: TO,
       replyTo: payload.email,
@@ -172,8 +178,27 @@ export async function submitContactForm(
       html: renderEmailHtml(payload),
       text: renderEmailText(payload),
     });
-  } catch {
-    // Do not leak provider error details to the client.
+    // Resend's SDK returns { data: { id }, error } rather than throwing on
+    // non-2xx responses. Log the outcome (without PII) so we can diagnose
+    // delivery problems from Vercel runtime logs.
+    if (result.error) {
+      console.error(
+        `[contact] resend rejected: name=${result.error.name} msg=${result.error.message}`
+      );
+      return {
+        ok: false,
+        message:
+          "We could not deliver your message right now. Please email us directly at hello@bizautofy.com.",
+      };
+    }
+    console.info(
+      `[contact] resend accepted: id=${result.data?.id ?? "unknown"} from=${FROM} to=${TO}`
+    );
+  } catch (err) {
+    // Network or unexpected SDK error.
+    console.error(
+      `[contact] resend threw: ${err instanceof Error ? err.message : String(err)}`
+    );
     return {
       ok: false,
       message:
