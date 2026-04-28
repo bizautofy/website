@@ -6,6 +6,16 @@ interface LogoProps {
   withText?: boolean;
 }
 
+/**
+ * Bizautofy lockup: woven-vesica mark + "bizautofy" wordmark with gradient underline under "biz".
+ *
+ * Hybrid approach:
+ *   - Mark: inline SVG. Two arcs woven so violet sits in front of amber at the
+ *     top crossing and amber stays in front at the bottom crossing.
+ *     Flat brand colors (theme-independent).
+ *   - Wordmark: real HTML text in `text-foreground` so it inherits the page font
+ *     and stays crisp at any zoom/dpi, plus adapts to light/dark themes.
+ */
 export function Logo({ className, withText = true }: LogoProps) {
   return (
     <Link
@@ -16,18 +26,53 @@ export function Logo({ className, withText = true }: LogoProps) {
         className
       )}
     >
-      <span
-        aria-hidden="true"
-        className="relative grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-primary via-violet-400 to-accent shadow-[0_8px_24px_-8px_rgba(167,139,250,0.7)]"
-      >
-        <span className="absolute inset-[2px] rounded-md bg-background" />
-        <span className="relative text-sm font-bold text-foreground">b</span>
-      </span>
+      <Mark
+        className={cn(
+          // Icon-only stays compact at 40px square.
+          // With wordmark, the mark is sized so the visible frame
+          // extends ~10px above the cap-top and ~10px below the baseline
+          // of the text-2xl wordmark (round caps factored in).
+          withText ? "h-14 w-14 shrink-0" : "h-10 w-10 shrink-0"
+        )}
+      />
       {withText && (
-        <span className="text-lg font-semibold text-foreground">
-          bizautofy
+        <span className="text-2xl font-bold leading-none tracking-tight text-foreground">
+          <span className="relative inline-block">
+            biz
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 -bottom-0.5 h-[2px] rounded-full bg-gradient-to-r from-[#7C5CFF] via-[#A78BFA] to-[#FFA231]"
+            />
+          </span>
+          autofy
         </span>
       )}
     </Link>
+  );
+}
+
+function Mark({ className }: { className?: string }) {
+  return (
+    <svg
+      role="img"
+      aria-label="Bizautofy"
+      viewBox="0 0 128 128"
+      className={className}
+    >
+      {/*
+        Woven vesica:
+          1) Full violet arc (gets covered by amber at both crossings)
+          2) Full amber arc on top
+          3) Upper half of violet redrawn on top -> violet sits in front of
+             amber at the TOP crossing only; amber stays in front at the
+             BOTTOM crossing.
+        Flat brand colors, no gradients, no glow.
+      */}
+      <g strokeWidth="9" fill="none" strokeLinecap="round">
+        <path d="M 38 24 A 36 36 0 0 1 38 104" stroke="#A78BFA" />
+        <path d="M 90 24 A 36 36 0 0 0 90 104" stroke="#FFC371" />
+        <path d="M 38 24 A 40 40 0 0 1 78 64" stroke="#A78BFA" />
+      </g>
+    </svg>
   );
 }

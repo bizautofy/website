@@ -38,21 +38,42 @@ export default async function OpengraphImage() {
             letterSpacing: -0.5,
           }}
         >
-          <div
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 10,
-              background: "linear-gradient(135deg,#a78bfa,#ffb84c)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#08061a",
-              fontWeight: 800,
-            }}
+          {/*
+            Brand mark: same woven vesica as /public/logo-mark.svg and the
+            <Logo /> component. Keeping the geometry inline (not loading the
+            file) so this OG route works at the edge without extra fetches.
+          */}
+          <svg
+            width={56}
+            height={56}
+            viewBox="0 0 128 128"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            b
-          </div>
+            <g
+              stroke="#A78BFA"
+              strokeWidth={11}
+              fill="none"
+              strokeLinecap="round"
+            >
+              <path d="M 38 24 A 36 36 0 0 1 38 104" />
+            </g>
+            <g
+              stroke="#FFC371"
+              strokeWidth={11}
+              fill="none"
+              strokeLinecap="round"
+            >
+              <path d="M 90 24 A 36 36 0 0 0 90 104" />
+            </g>
+            <g
+              stroke="#A78BFA"
+              strokeWidth={11}
+              fill="none"
+              strokeLinecap="round"
+            >
+              <path d="M 38 24 A 40 40 0 0 1 78 64" />
+            </g>
+          </svg>
           bizautofy
         </div>
 

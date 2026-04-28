@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Logo">
+  <title>Logo icon</title>
+  <!--
+    Browser tab favicon variant of /public/logo-mark.svg.
+
+    Two changes vs. the canonical mark for small-size legibility:
+      1. Dark brand-color rounded-square background (so the strokes have a
+         consistent backdrop instead of relying on the browser tab color).
+      2. Thicker strokes (14 vs 9) so the woven vesica still reads at 16-32px.
+
+    Modern browsers (Chrome, Firefox, Safari, Edge) prefer SVG favicons and
+    rasterize this on demand at any DPI; .ico is kept only as a fallback for
+    very old browsers.
+  -->
+  <rect width="128" height="128" rx="28" ry="28" fill="#08061a"/>
+  <g stroke-width="14" fill="none" stroke-linecap="round">
+    <path d="M 38 24 A 36 36 0 0 1 38 104" stroke="#A78BFA"/>
+    <path d="M 90 24 A 36 36 0 0 0 90 104" stroke="#FFC371"/>
+    <path d="M 38 24 A 40 40 0 0 1 78 64" stroke="#A78BFA"/>
+  </g>
+</svg>
