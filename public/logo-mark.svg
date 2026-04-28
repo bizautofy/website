@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Logo">
+  <title>Woven vesica mark</title>
+  <!--
+    Brand mark.
+
+    Two arcs forming a vesica ("the exchange"):
+      - left/violet arc and right/amber arc, each a half-circle
+      - flat brand colors (no gradients, no glow)
+      - over/under weave: violet sits IN FRONT of amber at the TOP crossing,
+        amber stays in front at the BOTTOM crossing
+
+    Geometry: SVG auto-scales rx=ry=36 to 40 because the chord length is 80.
+    Centers (38,64) and (90,64), both r=40.
+    The two circles intersect at (64, ~33.6) and (64, ~94.4).
+
+    Z-order trick:
+      1. Full violet arc drawn first
+      2. Full amber arc on top (covers violet at both crossings)
+      3. Upper half of violet redrawn on top: from (38,24) to the rightmost
+         peak (78,64) - this only crosses the TOP intersection, so violet
+         sits in front there while amber stays in front at the bottom.
+
+    NOTE: The website's <Logo /> React component (src/components/layout/Logo.tsx)
+    inlines these same paths directly. This file exists as the canonical brand
+    mark for sharing, brand kit usage, favicon generation, etc.
+  -->
+  <g stroke-width="9" fill="none" stroke-linecap="round">
+    <path d="M 38 24 A 36 36 0 0 1 38 104" stroke="#A78BFA"/>
+    <path d="M 90 24 A 36 36 0 0 0 90 104" stroke="#FFC371"/>
+    <path d="M 38 24 A 40 40 0 0 1 78 64" stroke="#A78BFA"/>
+  </g>
+</svg>

@@ -88,9 +88,8 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  icons: {
-    icon: "/favicon.ico",
-  },
+  // Icons are auto-discovered from src/app/{favicon.ico,icon.svg,apple-icon.png}.
+  // See: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/app-icons
 };
 
 export const viewport: Viewport = {
