@@ -10,16 +10,10 @@ import path from "node:path";
  * - CSP allows inline styles because Next.js + Tailwind v4 inject critical
  *   inline styles. In production we omit `unsafe-eval`; in dev we allow it
  *   because React DevTools / Turbopack rely on it.
- * - Calendly is allowed in script-src/frame-src for the contact page embed.
  */
 const isDev = process.env.NODE_ENV !== "production";
 
-const scriptSrc = [
-  "'self'",
-  "'unsafe-inline'",
-  isDev ? "'unsafe-eval'" : "",
-  "https://assets.calendly.com",
-]
+const scriptSrc = ["'self'", "'unsafe-inline'", isDev ? "'unsafe-eval'" : ""]
   .filter(Boolean)
   .join(" ");
 
@@ -41,11 +35,11 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       `script-src ${scriptSrc}`,
-      "style-src 'self' 'unsafe-inline' https://assets.calendly.com",
+      "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https://fonts.gstatic.com",
-      "connect-src 'self' https://api.resend.com https://*.upstash.io https://calendly.com",
-      "frame-src 'self' https://calendly.com",
+      "connect-src 'self' https://api.resend.com https://*.upstash.io",
+      "frame-src 'self'",
       "form-action 'self'",
       "base-uri 'self'",
       "object-src 'none'",
