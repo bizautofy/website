@@ -72,7 +72,7 @@ If Resend is not configured the form still validates and rate-limits; submission
   - `X-Frame-Options: SAMEORIGIN`
   - `Referrer-Policy: strict-origin-when-cross-origin`
   - `Permissions-Policy` denies camera/mic/geolocation, scopes payment to self
-- All third-party hosts are explicitly allow-listed in CSP (Calendly for booking, Resend for outbound, Upstash for limiter).
+- All third-party hosts are explicitly allow-listed in CSP (Resend for outbound, Upstash for limiter).
 
 ## Deployment
 

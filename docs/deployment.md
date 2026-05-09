@@ -397,7 +397,7 @@ npm run dev
 Headers set in `next.config.ts`:
 
 - `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`
-- `Content-Security-Policy` — strict allow-list of `self` + Calendly + Resend + Upstash + Google fonts. `'unsafe-inline'` permitted only for styles (Tailwind requires it). `'unsafe-eval'` only in `NODE_ENV !== "production"`.
+- `Content-Security-Policy` — strict allow-list of `self` + Resend + Upstash + Google fonts. `'unsafe-inline'` permitted only for styles (Tailwind requires it). `'unsafe-eval'` only in `NODE_ENV !== "production"`.
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: SAMEORIGIN` (defense-in-depth alongside CSP `frame-ancestors`)
 - `Referrer-Policy: strict-origin-when-cross-origin`

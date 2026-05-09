@@ -10,7 +10,7 @@ import { brand } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Book a free 15-minute call or send us a note. We reply to every message within one business day.",
+    "Tell us about your business. We reply to every message within one business day with a calendar link or a written audit offer.",
 };
 
 const reassurances = [
@@ -46,86 +46,61 @@ export default function ContactPage() {
               </span>
             </h1>
             <p className="mt-6 text-lg text-muted-foreground text-balance">
-              {brand.responsePromise} Or book a free 15-minute call directly.
+              {brand.responsePromise} We reply with a calendar link or a written
+              audit offer — whichever you prefer.
             </p>
           </div>
         </Container>
       </Section>
 
       <Section spacing="tight" className="pt-0">
-        <Container>
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr]">
-            <AnimatedSection className="rounded-3xl border border-white/10 bg-card/40 p-8 backdrop-blur-sm sm:p-10">
-              <h2 className="font-display text-2xl font-semibold tracking-tight">
-                Send us a note
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                The more detail the better. We will reply with a written audit
-                offer or a calendar link — whichever you prefer.
-              </p>
-              <div className="mt-8">
-                <Suspense
-                  fallback={
-                    <div className="h-96 animate-pulse rounded-2xl bg-white/[0.03]" />
-                  }
-                >
-                  <ContactForm />
-                </Suspense>
-              </div>
-            </AnimatedSection>
-
-            <div className="space-y-4">
-              <AnimatedSection
-                delay={0.05}
-                className="rounded-3xl border border-white/10 bg-card/40 p-8 backdrop-blur-sm"
+        <Container size="narrow">
+          <AnimatedSection className="rounded-3xl border border-white/10 bg-card/40 p-8 backdrop-blur-sm sm:p-10">
+            <h2 className="font-display text-2xl font-semibold tracking-tight">
+              Send us a note
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              The more detail the better. The more we know about your business,
+              the better we can scope the right next step — a 15-min fit-check,
+              a written audit, or a fast email answer.
+            </p>
+            <div className="mt-8">
+              <Suspense
+                fallback={
+                  <div className="h-96 animate-pulse rounded-2xl bg-white/[0.03]" />
+                }
               >
-                <h2 className="font-display text-2xl font-semibold tracking-tight">
-                  Or book a 15-min call
-                </h2>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Pick a time directly. We will come prepared — please share
-                  your business URL when you book.
-                </p>
-                <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-background/60">
-                  {/*
-                    Calendly embed placeholder. Replace
-                    `BIZAUTOFY_CALENDLY_URL` with your real Calendly username.
-                  */}
-                  <iframe
-                    title="Book a free 15-minute call with Bizautofy"
-                    src="https://calendly.com/bizautofy/intro?embed_domain=bizautofy.com&hide_landing_page_details=1&background_color=08061a&text_color=f0f0fa&primary_color=a78bfa"
-                    loading="lazy"
-                    className="h-[640px] w-full"
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
-                  />
-                </div>
-              </AnimatedSection>
-
-              <AnimatedSection delay={0.1} className="grid gap-3">
-                {reassurances.map((r) => {
-                  const Icon = r.icon;
-                  return (
-                    <div
-                      key={r.title}
-                      className="flex items-start gap-4 rounded-2xl border border-white/10 bg-card/40 p-5 backdrop-blur-sm"
-                    >
-                      <div className="inline-flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-accent/15 text-accent ring-1 ring-inset ring-accent/30">
-                        <Icon className="h-4 w-4" aria-hidden />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold tracking-tight">
-                          {r.title}
-                        </p>
-                        <p className="mt-0.5 text-sm text-muted-foreground">
-                          {r.body}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </AnimatedSection>
+                <ContactForm />
+              </Suspense>
             </div>
-          </div>
+          </AnimatedSection>
+
+          <AnimatedSection
+            delay={0.1}
+            className="mt-8 grid gap-3 sm:grid-cols-3"
+          >
+            {reassurances.map((r) => {
+              const Icon = r.icon;
+              return (
+                <div
+                  key={r.title}
+                  className="flex items-start gap-4 rounded-2xl border border-white/10 bg-card/40 p-5 backdrop-blur-sm"
+                >
+                  <div className="inline-flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-accent/15 text-accent ring-1 ring-inset ring-accent/30">
+                    <Icon className="h-4 w-4" aria-hidden />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold tracking-tight">
+                      {r.title}
+                    </p>
+                    <p className="mt-0.5 text-sm text-muted-foreground">
+                      {r.body}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </AnimatedSection>
         </Container>
       </Section>
     </>
