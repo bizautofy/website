@@ -8,6 +8,10 @@ import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { MeshGradient } from "@/components/shared/MeshGradient";
 import { CTA } from "@/components/home/CTA";
 import {
+  ServicesSideNav,
+  type SideNavGroup,
+} from "@/components/services/ServicesSideNav";
+import {
   services,
   customerServices,
   internalServices,
@@ -101,8 +105,11 @@ function ServiceArticle({
               {service.outcome}
             </p>
             <Button asChild variant="ghost" size="sm" className="mt-5 -ml-3">
-              <Link href={`/contact?service=${service.slug}`}>
-                Talk about {service.title.toLowerCase()}
+              <Link
+                href={`/contact?service=${service.slug}`}
+                aria-label={`Talk to us about ${service.title}`}
+              >
+                Talk to us about this
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </Button>
@@ -112,6 +119,33 @@ function ServiceArticle({
     </AnimatedSection>
   );
 }
+
+// Map the content-layer service lists down to just `{ slug, title }` so the
+// client-side scrollspy component receives the minimum payload it needs.
+const sideNavGroups: SideNavGroup[] = [
+  {
+    id: serviceTracks[0].id,
+    label: serviceTracks[0].label,
+    items: customerServices.map((s) => ({ slug: s.slug, title: s.title })),
+  },
+  {
+    id: serviceTracks[1].id,
+    label: serviceTracks[1].label,
+    items: internalServices.map((s) => ({ slug: s.slug, title: s.title })),
+  },
+  ...(crossServices.length > 0
+    ? [
+        {
+          id: "cross",
+          label: "One view of both",
+          items: crossServices.map((s) => ({
+            slug: s.slug,
+            title: s.title,
+          })),
+        },
+      ]
+    : []),
+];
 
 export default function ServicesPage() {
   return (
