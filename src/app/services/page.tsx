@@ -50,11 +50,11 @@ function ServiceArticle({
     <AnimatedSection delay={delay} as="article">
       <article
         id={service.slug}
-        className="scroll-mt-28 rounded-3xl border border-white/10 bg-card/40 p-8 backdrop-blur-sm sm:p-10"
+        className="scroll-mt-28 rounded-3xl border border-foreground/10 bg-card/40 p-8 backdrop-blur-sm sm:p-10"
       >
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-accent/15 ring-1 ring-inset ring-white/10">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 ring-1 ring-inset ring-foreground/10">
               <Icon className="h-5 w-5 text-primary" aria-hidden />
             </div>
             <h3 className="mt-5 font-display text-2xl font-bold tracking-tight sm:text-3xl">
@@ -93,7 +93,7 @@ function ServiceArticle({
             </ul>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-background/40 p-6">
+          <div className="rounded-2xl border border-foreground/10 bg-background/40 p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">
               The outcome
             </p>
@@ -155,7 +155,7 @@ export default function ServicesPage() {
                   const list =
                     track.id === "customer" ? customerServices : internalServices;
                   return (
-                    <div key={track.id} className="border-l border-white/10 pl-6">
+                    <div key={track.id} className="border-l border-foreground/10 pl-6">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
                         {track.label}
                       </p>
@@ -174,7 +174,7 @@ export default function ServicesPage() {
                   );
                 })}
                 {crossServices.length > 0 && (
-                  <div className="border-l border-white/10 pl-6">
+                  <div className="border-l border-foreground/10 pl-6">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
                       One view of both
                     </p>

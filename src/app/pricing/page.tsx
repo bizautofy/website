@@ -105,14 +105,14 @@ export default function PricingPage() {
                   "rounded-2xl border bg-card/40 p-6 backdrop-blur-sm",
                   s.accent
                     ? "border-primary/40 ring-1 ring-primary/20"
-                    : "border-white/10"
+                    : "border-foreground/10"
                 )}
               >
                 <div className="flex items-baseline gap-3">
                   <span className="font-mono text-xs text-muted-foreground/70">
                     {s.num}
                   </span>
-                  <span className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                  <span className="h-px flex-1 bg-foreground/10" />
                 </div>
                 <h3 className="mt-4 font-display text-xl font-semibold tracking-tight">
                   {s.title}
@@ -159,7 +159,7 @@ export default function PricingPage() {
                   {pricingDiscovery.body}
                 </p>
 
-                <p className="mt-4 max-w-xl rounded-2xl border border-white/10 bg-background/40 p-4 text-sm text-foreground/85">
+                <p className="mt-4 max-w-xl rounded-2xl border border-foreground/10 bg-background/40 p-4 text-sm text-foreground/85">
                   <span className="font-semibold text-foreground">
                     Our promise:{" "}
                   </span>
@@ -179,7 +179,7 @@ export default function PricingPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-background/40 p-6 backdrop-blur">
+              <div className="rounded-2xl border border-foreground/10 bg-background/40 p-6 backdrop-blur">
                 <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent/15 text-accent ring-1 ring-inset ring-accent/30">
                   <Search className="h-4 w-4" aria-hidden />
                 </div>
@@ -255,7 +255,7 @@ export default function PricingPage() {
       {/* ------------------------------------------------------------ */}
       <Section>
         <Container size="narrow">
-          <AnimatedSection className="rounded-3xl border border-white/10 bg-card/40 p-8 backdrop-blur-sm sm:p-12">
+          <AnimatedSection className="rounded-3xl border border-foreground/10 bg-card/40 p-8 backdrop-blur-sm sm:p-12">
             <Eyebrow>{pricingPrinciples.eyebrow}</Eyebrow>
             <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl">
               {pricingPrinciples.title}
@@ -304,7 +304,7 @@ export default function PricingPage() {
       {/* ------------------------------------------------------------ */}
       <Section spacing="tight">
         <Container size="narrow">
-          <AnimatedSection className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-dashed border-white/10 bg-background/40 p-8 text-center sm:flex-row sm:text-left">
+          <AnimatedSection className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-dashed border-foreground/10 bg-background/40 p-8 text-center sm:flex-row sm:text-left">
             <div>
               <h3 className="font-display text-2xl font-semibold tracking-tight">
                 Ready to see what your business could automate?
@@ -372,7 +372,7 @@ function BandCard({ band, delay }: BandCardProps) {
         "relative flex h-full flex-col rounded-3xl border bg-card/40 p-8 backdrop-blur-sm transition-all duration-300",
         band.highlighted
           ? "border-primary/40 ring-1 ring-primary/20 lg:-mt-4 lg:mb-4"
-          : "border-white/10"
+          : "border-foreground/10"
       )}
     >
       {band.highlighted && (
@@ -407,7 +407,7 @@ function BandCard({ band, delay }: BandCardProps) {
         </p>
       </div>
 
-      <ul className="mt-6 flex-1 space-y-2.5 border-t border-white/5 pt-6 text-sm text-foreground/90">
+      <ul className="mt-6 flex-1 space-y-2.5 border-t border-foreground/5 pt-6 text-sm text-foreground/90">
         {band.includes.map((f) => (
           <li key={f} className="flex items-start gap-3">
             <span className="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-primary/15 text-primary">

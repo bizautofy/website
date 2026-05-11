@@ -178,7 +178,7 @@ export function ContactForm() {
           id="plan"
           name="plan"
           defaultValue={initialPlan}
-          className="flex h-11 w-full appearance-none rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:border-primary/50"
+          className="flex h-11 w-full appearance-none rounded-xl border border-foreground/10 bg-white/[0.03] px-4 py-2 text-sm text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:border-primary/50"
         >
           {PLANS.map((p) => (
             <option key={p.value} value={p.value} className="bg-background">

@@ -11,7 +11,7 @@ export function FoundingProgram() {
   return (
     <Section>
       <Container>
-        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-card/40 p-8 backdrop-blur-sm sm:p-12 lg:p-16">
+        <div className="relative overflow-hidden rounded-[2rem] border border-foreground/10 bg-card/40 p-8 backdrop-blur-sm sm:p-12 lg:p-16">
           <MeshGradient variant="accent" />
 
           <div className="relative grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
@@ -45,7 +45,7 @@ export function FoundingProgram() {
                 return (
                   <div
                     key={perk.title}
-                    className="rounded-2xl border border-white/10 bg-background/40 p-5 backdrop-blur"
+                    className="rounded-2xl border border-foreground/10 bg-background/40 p-5 backdrop-blur"
                   >
                     <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent/15 text-accent ring-1 ring-inset ring-accent/30">
                       <Icon className="h-4 w-4" aria-hidden />

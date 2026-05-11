@@ -7,12 +7,15 @@ interface LogoProps {
 }
 
 /**
- * Bizautofy lockup: woven-vesica mark + "bizautofy" wordmark with gradient underline under "biz".
+ * Bizautofy lockup: woven-vesica mark + "bizautofy" wordmark with a flat
+ * brand-color underline under "biz".
  *
  * Hybrid approach:
  *   - Mark: inline SVG. Two arcs woven so violet sits in front of amber at the
  *     top crossing and amber stays in front at the bottom crossing.
- *     Flat brand colors (theme-independent).
+ *     Stroke colors are driven by `--brand-mark-violet` / `--brand-mark-amber`
+ *     (defined per theme in globals.css) so the duotone deepens on the light
+ *     cream background instead of washing out.
  *   - Wordmark: real HTML text in `text-foreground` so it inherits the page font
  *     and stays crisp at any zoom/dpi, plus adapts to light/dark themes.
  */
@@ -41,7 +44,7 @@ export function Logo({ className, withText = true }: LogoProps) {
             biz
             <span
               aria-hidden="true"
-              className="absolute inset-x-0 -bottom-0.5 h-[2px] rounded-full bg-gradient-to-r from-[#7C5CFF] via-[#A78BFA] to-[#FFA231]"
+              className="absolute inset-x-0 -bottom-0.5 h-[2px] rounded-full bg-primary"
             />
           </span>
           autofy
@@ -66,12 +69,21 @@ function Mark({ className }: { className?: string }) {
           3) Upper half of violet redrawn on top -> violet sits in front of
              amber at the TOP crossing only; amber stays in front at the
              BOTTOM crossing.
-        Flat brand colors, no gradients, no glow.
+        Stroke colors come from CSS vars so the duotone re-tunes per theme.
       */}
       <g strokeWidth="9" fill="none" strokeLinecap="round">
-        <path d="M 38 24 A 36 36 0 0 1 38 104" stroke="#A78BFA" />
-        <path d="M 90 24 A 36 36 0 0 0 90 104" stroke="#FFC371" />
-        <path d="M 38 24 A 40 40 0 0 1 78 64" stroke="#A78BFA" />
+        <path
+          d="M 38 24 A 36 36 0 0 1 38 104"
+          className="stroke-brand-violet"
+        />
+        <path
+          d="M 90 24 A 36 36 0 0 0 90 104"
+          className="stroke-brand-amber"
+        />
+        <path
+          d="M 38 24 A 40 40 0 0 1 78 64"
+          className="stroke-brand-violet"
+        />
       </g>
     </svg>
   );

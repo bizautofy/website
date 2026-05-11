@@ -13,7 +13,7 @@ export function StatsStrip() {
           </h2>
         </AnimatedSection>
 
-        <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] sm:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-foreground/10 bg-white/[0.04] sm:grid-cols-4">
           {stats.map((stat, idx) => (
             <AnimatedSection
               key={stat.label}

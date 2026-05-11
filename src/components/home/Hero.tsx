@@ -12,7 +12,7 @@ export function Hero() {
       <MeshGradient variant="hero" />
       <Container>
         <div className="relative mx-auto flex max-w-4xl flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-tight text-foreground/90 backdrop-blur">
+          <div className="inline-flex items-center gap-2 rounded-full border border-foreground/10 bg-foreground/5 px-4 py-1.5 text-xs font-medium tracking-tight text-foreground/90 backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden />
             <span>{hero.eyebrow}</span>
           </div>

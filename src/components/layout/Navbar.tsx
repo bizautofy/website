@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/layout/Logo";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { nav } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +29,7 @@ export function Navbar() {
       className={cn(
         "sticky top-0 z-40 w-full transition-all duration-300",
         scrolled
-          ? "border-b border-white/10 bg-background/70 backdrop-blur-xl"
+          ? "border-b border-foreground/10 bg-background/70 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       )}
     >
@@ -55,7 +56,7 @@ export function Navbar() {
                 {active && (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute inset-0 -z-10 rounded-full bg-white/5"
+                    className="absolute inset-0 -z-10 rounded-full bg-foreground/5"
                     transition={{ type: "spring", duration: 0.5 }}
                   />
                 )}
@@ -65,29 +66,33 @@ export function Navbar() {
           })}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-2">
+          <ThemeToggle />
           <Button asChild size="sm" variant="primary">
             <Link href="/contact">Book a call</Link>
           </Button>
         </div>
 
-        <button
-          type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-foreground"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            type="button"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-foreground/10 bg-foreground/5 text-foreground"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       <div
         id="mobile-menu"
         className={cn(
-          "md:hidden overflow-hidden border-t border-white/5 bg-background/95 backdrop-blur-xl transition-[max-height,opacity] duration-300",
+          "md:hidden overflow-hidden border-t border-foreground/5 bg-background/95 backdrop-blur-xl transition-[max-height,opacity] duration-300",
           open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         )}
       >
@@ -105,8 +110,8 @@ export function Navbar() {
                 className={cn(
                   "rounded-xl px-4 py-3 text-base font-medium transition-colors",
                   active
-                    ? "bg-white/5 text-foreground"
-                    : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                    ? "bg-foreground/5 text-foreground"
+                    : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                 )}
               >
                 {item.label}
