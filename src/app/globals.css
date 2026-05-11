@@ -107,6 +107,15 @@ body {
   color: rgb(var(--foreground));
   font-family: var(--font-sans);
   font-feature-settings: "ss01", "cv11";
+  /*
+   * Defense-in-depth against horizontal overflow on mobile.
+   * `clip` (vs `hidden`) does NOT create a new scroll container, so
+   * position:sticky, anchor scrolling, and viewport-relative effects
+   * keep working. Browsers without `clip` support fall through to the
+   * implicit `visible` default — combine with targeted fixes (no-wrap
+   * buttons, oversized images, etc.) rather than relying on this alone.
+   */
+  overflow-x: clip;
 }
 
 ::selection {

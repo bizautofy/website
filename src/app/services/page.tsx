@@ -8,6 +8,10 @@ import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { MeshGradient } from "@/components/shared/MeshGradient";
 import { CTA } from "@/components/home/CTA";
 import {
+  ServicesSideNav,
+  type SideNavGroup,
+} from "@/components/services/ServicesSideNav";
+import {
   services,
   customerServices,
   internalServices,
@@ -101,8 +105,11 @@ function ServiceArticle({
               {service.outcome}
             </p>
             <Button asChild variant="ghost" size="sm" className="mt-5 -ml-3">
-              <Link href={`/contact?service=${service.slug}`}>
-                Talk about {service.title.toLowerCase()}
+              <Link
+                href={`/contact?service=${service.slug}`}
+                aria-label={`Talk to us about ${service.title}`}
+              >
+                Talk to us about this
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </Button>
@@ -112,6 +119,33 @@ function ServiceArticle({
     </AnimatedSection>
   );
 }
+
+// Map the content-layer service lists down to just `{ slug, title }` so the
+// client-side scrollspy component receives the minimum payload it needs.
+const sideNavGroups: SideNavGroup[] = [
+  {
+    id: serviceTracks[0].id,
+    label: serviceTracks[0].label,
+    items: customerServices.map((s) => ({ slug: s.slug, title: s.title })),
+  },
+  {
+    id: serviceTracks[1].id,
+    label: serviceTracks[1].label,
+    items: internalServices.map((s) => ({ slug: s.slug, title: s.title })),
+  },
+  ...(crossServices.length > 0
+    ? [
+        {
+          id: "cross",
+          label: "One view of both",
+          items: crossServices.map((s) => ({
+            slug: s.slug,
+            title: s.title,
+          })),
+        },
+      ]
+    : []),
+];
 
 export default function ServicesPage() {
   return (
@@ -145,54 +179,7 @@ export default function ServicesPage() {
       <Section spacing="tight" className="pt-0">
         <Container>
           <div className="grid gap-12 lg:grid-cols-[260px_1fr]">
-            {/* Sticky side-nav, grouped by track */}
-            <aside className="hidden lg:block">
-              <nav
-                aria-label="Services on this page"
-                className="sticky top-24 space-y-6"
-              >
-                {serviceTracks.map((track) => {
-                  const list =
-                    track.id === "customer" ? customerServices : internalServices;
-                  return (
-                    <div key={track.id} className="border-l border-foreground/10 pl-6">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
-                        {track.label}
-                      </p>
-                      <div className="mt-2 space-y-1">
-                        {list.map((s) => (
-                          <a
-                            key={s.slug}
-                            href={`#${s.slug}`}
-                            className="block py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                          >
-                            {s.title}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-                {crossServices.length > 0 && (
-                  <div className="border-l border-foreground/10 pl-6">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
-                      One view of both
-                    </p>
-                    <div className="mt-2 space-y-1">
-                      {crossServices.map((s) => (
-                        <a
-                          key={s.slug}
-                          href={`#${s.slug}`}
-                          className="block py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                        >
-                          {s.title}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </nav>
-            </aside>
+            <ServicesSideNav groups={sideNavGroups} />
 
             <div className="space-y-20">
               {serviceTracks.map((track) => {
