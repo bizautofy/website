@@ -9,7 +9,7 @@ export function CTA() {
   return (
     <Section>
       <Container size="narrow">
-        <AnimatedSection className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-card/30 px-8 py-16 text-center backdrop-blur-sm sm:px-16 sm:py-20">
+        <AnimatedSection className="relative overflow-hidden rounded-[2rem] border border-foreground/10 bg-card/30 px-8 py-16 text-center backdrop-blur-sm sm:px-16 sm:py-20">
           <MeshGradient variant="soft" />
           <div className="relative">
             <h2 className="mx-auto max-w-2xl font-display text-4xl font-bold tracking-tight text-balance sm:text-5xl">

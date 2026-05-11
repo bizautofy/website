@@ -30,7 +30,7 @@ export default function AboutPage() {
         <Container size="narrow">
           <AnimatedSection
             delay={0.05}
-            className="space-y-6 rounded-3xl border border-white/10 bg-card/40 p-8 backdrop-blur-sm sm:p-12"
+            className="space-y-6 rounded-3xl border border-foreground/10 bg-card/40 p-8 backdrop-blur-sm sm:p-12"
           >
             {about.founderNote.body.map((p, i) => (
               <p
@@ -66,9 +66,9 @@ export default function AboutPage() {
                 <AnimatedSection
                   key={v.title}
                   delay={idx * 0.05}
-                  className="rounded-2xl border border-white/10 bg-card/40 p-7 backdrop-blur-sm"
+                  className="rounded-2xl border border-foreground/10 bg-card/40 p-7 backdrop-blur-sm"
                 >
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-accent/15 ring-1 ring-inset ring-white/10">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 ring-1 ring-inset ring-foreground/10">
                     <Icon className="h-4 w-4 text-primary" aria-hidden />
                   </div>
                   <h3 className="mt-5 font-display text-xl font-semibold tracking-tight">
@@ -100,7 +100,7 @@ export default function AboutPage() {
                 <AnimatedSection
                   key={m.title}
                   delay={idx * 0.05}
-                  className="rounded-2xl border border-white/10 bg-card/40 p-6 backdrop-blur-sm"
+                  className="rounded-2xl border border-foreground/10 bg-card/40 p-6 backdrop-blur-sm"
                 >
                   <Icon className="h-5 w-5 text-accent" aria-hidden />
                   <h3 className="mt-4 text-base font-semibold tracking-tight">

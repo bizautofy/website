@@ -10,7 +10,7 @@ export const contentType = "image/png";
 export default async function OpengraphImage() {
   // Drive the headline from the Hero copy so the social card never drifts
   // out of sync with the site. Splits on the highlighted phrase to keep the
-  // same italic-gradient treatment.
+  // same italic accent treatment (flat primary color, matches the UI).
   const [headlineBefore, headlineAfter] = hero.title.split(hero.highlight);
 
   return new ImageResponse(
@@ -22,8 +22,7 @@ export default async function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           padding: "80px",
-          background:
-            "radial-gradient(circle at 20% 20%, rgba(167,139,250,0.45), transparent 60%), radial-gradient(circle at 80% 80%, rgba(255,184,76,0.35), transparent 60%), #08061a",
+          background: "#08061a",
           color: "#f0f0fa",
           fontFamily: "system-ui, -apple-system, sans-serif",
         }}
@@ -92,9 +91,7 @@ export default async function OpengraphImage() {
             {headlineBefore}
             <span
               style={{
-                background: "linear-gradient(120deg,#a78bfa,#c4b5fd,#ffb84c)",
-                backgroundClip: "text",
-                color: "transparent",
+                color: "#a78bfa",
                 fontStyle: "italic",
                 fontWeight: 600,
               }}

@@ -17,7 +17,7 @@ export function Badge({
         variant === "default" &&
           "bg-primary/10 text-primary border border-primary/20",
         variant === "outline" &&
-          "bg-white/5 text-muted-foreground border border-white/10",
+          "bg-foreground/5 text-muted-foreground border border-foreground/10",
         variant === "accent" &&
           "bg-accent/15 text-accent border border-accent/25",
         className

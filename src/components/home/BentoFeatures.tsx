@@ -25,12 +25,12 @@ function ServiceTile({ service, delay }: { service: Service; delay: number }) {
     >
       <Link
         href={`/services#${service.slug}`}
-        className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/10 bg-card/40 p-8 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-card/60 gradient-border"
+        className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-foreground/10 bg-card/40 p-8 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-card/60 gradient-border"
       >
         <div className="absolute -top-20 -right-20 h-48 w-48 rounded-full bg-primary/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
 
         <div>
-          <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-accent/15 ring-1 ring-inset ring-white/10">
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/15 ring-1 ring-inset ring-foreground/10">
             <Icon className="h-5 w-5 text-primary" aria-hidden />
           </div>
           <h3 className="mt-6 font-display text-xl font-semibold tracking-tight">

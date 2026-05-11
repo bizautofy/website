@@ -5,7 +5,7 @@ import { brand, nav } from "@/lib/content";
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="relative mt-auto border-t border-white/10 bg-background">
+    <footer className="relative mt-auto border-t border-foreground/10 bg-background">
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr] md:gap-8">
         <div className="space-y-4">
           <Logo />
@@ -59,7 +59,7 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/5">
+      <div className="border-t border-foreground/5">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-6 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:px-8">
           <p>
             © {year} {brand.name}. All rights reserved.

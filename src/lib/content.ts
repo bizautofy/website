@@ -276,7 +276,7 @@ export const howItWorks: Step[] = [
   {
     number: "01",
     title: "Discovery",
-    body: "Every engagement starts with a paid Discovery & Automation Audit ($500, refundable into Build). We shadow your operation, document customer-facing and back-office systems, and deliver a written audit, a prioritized automation roadmap, and a fixed-price proposal for everything that follows. Want a free 15-minute fit-check first? Book it on the contact page.",
+    body: "Every engagement starts with a Discovery & Automation Audit. Founding customers get it free as part of the founding program (normally $500, refundable into Build). We shadow your operation, document customer-facing and back-office systems, and deliver a written audit, a prioritized automation roadmap, and a fixed-price proposal for everything that follows. Want a free 15-minute fit-check first? Book it on the contact page.",
     bullets: [
       "90-minute kickoff and on-site / virtual shadowing",
       "Written audit of front-of-house and back-office systems",
@@ -358,6 +358,11 @@ export const foundingProgram = {
   body: "Bizautofy is new on purpose. We are taking on a small, hand-picked group of founding customers in exchange for honest feedback and (eventually) a public case study. In return, your retainer rate is locked at signing for 24 months, capped at inflation forever after, and your original scope stays at the price you signed at — for as long as we run together.",
   perks: [
     {
+      icon: Search,
+      title: "Free Discovery audit ($500 value)",
+      body: "Founding customers pay nothing for the Discovery & Automation Audit while spots are open. Same week-long shadow, same written audit, same fixed-price proposal — yours to keep, even if you never engage us further.",
+    },
+    {
       icon: Wallet,
       title: "Rate locked for 24 months",
       body: "The retainer rate you sign at is the rate you pay for two full years. No surprise hikes, no fine print.",
@@ -382,7 +387,10 @@ export const foundingProgram = {
 
 // ---------------------------------------------------------------------------
 // Pricing — three-step engagement
-//   01  Discovery  →  fixed price ($500), the only fixed price on the site
+//   01  Discovery  →  $500 list price, free for founding customers (promo).
+//                     Refundable into Build at the list price; the founding-
+//                     customer rate ($0) holds as long as founding spots are
+//                     open. The only fixed price on the site.
 //   02  Build      →  custom-quoted from Discovery; ranges shown to anchor
 //   03  Run        →  monthly retainer scoped to what was built
 //
@@ -395,12 +403,16 @@ export const foundingProgram = {
 export const pricingDiscovery = {
   badge: "Step 01 — Discovery",
   name: "Discovery & Automation Audit",
-  price: "$500",
-  priceNote: "one-time, refundable into Build",
+  // Promotional founding-customer price. Once founding spots fill, swap
+  // `price` back to `regularPrice` and clear `priceNote` / `regularPrice`.
+  price: "Free",
+  priceNote: "for founding customers — limited spots",
+  regularPrice: "$500",
+  regularPriceNote: "list price after founding program closes",
   duration: "1 week turnaround",
   promise:
-    "100% credited toward Build if you proceed within 30 days. 30-day money back if the audit alone isn't worth $500.",
-  body: "We don't quote Build or Run numbers without studying the business first. Discovery is the entry point and the only fixed price on this page. Everything that follows is custom-scoped from what we find — and you see the exact dollar figures in writing before any further work begins.",
+    "Yours to keep — even if you never engage us further. Founding customers pay nothing for Discovery as part of the founding program; once founding spots are filled, Discovery is $500, fully credited toward Build if you proceed within 30 days.",
+  body: "We don't quote Build or Run numbers without studying the business first — but we don't charge our founding customers to do it, either. Discovery is the entry point on every engagement; right now it's free as part of the founding program, and it always comes with a written, fixed-price proposal in your hands before any further work begins.",
   deliverables: [
     "90-minute kickoff and on-site / virtual shadowing",
     "Written audit of customer-facing systems (site, GBP, reviews, booking, comms)",
@@ -543,7 +555,7 @@ export const pricingPrinciples = {
   title: "Custom-built means custom-priced.",
   body: [
     "Every small business runs on a different stack. Square versus Toast. QuickBooks versus Xero. One location versus three. Four employees versus eighteen. The integration depth — and the price — depends entirely on what we find inside the business, not on what tier you click on a website.",
-    "So we sell the audit, not the answer. Discovery is the only fixed price on this page. From there, you get a written, fixed-price proposal for Build and Run. You always know the number before any further work begins.",
+    "So we sell the audit, not the answer. Discovery is the only fixed price on this page — $500 normally, free for founding customers while spots remain open. From there, you get a written, fixed-price proposal for Build and Run. You always know the number before any further work begins.",
     "The ranges above are real — they cover most engagements at our practice scale. If your situation falls outside them, we will tell you in the audit, with the math to back it.",
   ],
 } as const;
@@ -552,11 +564,12 @@ export const foundingGuarantee = {
   eyebrow: "Founding-customer guarantee",
   title: "The price you sign at is the price that holds.",
   bullets: [
+    "Discovery is free for founding customers — a $500 audit, on us, while spots are open.",
     "Your retainer rate is locked at signing for 24 months — no rate hikes, ever.",
     "After 24 months, we adjust only by U.S. BLS Urban CPI. Never more. It is in the contract.",
     "Your original scope stays at your original price for as long as we run together.",
     "New automations and new locations are quoted at current rates — but you always pay the founding-customer rate for that band.",
-    "30-day money back on Discovery. Cancel Run any time with 30 days' notice.",
+    "Cancel Run any time with 30 days' notice.",
   ],
 } as const;
 
@@ -583,8 +596,8 @@ export const faqs: Faq[] = [
     a: "Because automating a small business is not a flat-priced product — it is an integration. Two coffee shops on the same block can have different POS systems, different bookkeeping software, different staff size, different inventory practices. Selling them the same shrink-wrapped tier would mean either undercharging one or overcharging the other. Discovery is the only fixed price on this site; everything else is scoped to what we find, with the exact dollar figures in writing before any further work begins.",
   },
   {
-    q: "Why is Discovery paid? Other agencies do it for free.",
-    a: "Free audits attract tire-kickers and reward fast, generic templates. A paid Discovery means we spend a real week studying your business — both the customer-facing side and the operational side — and you walk away with a written audit, a prioritized roadmap, and a fixed-price proposal you can keep, even if you never engage us further. We refund the $500 if the audit alone isn't worth it, and credit it 100% toward Build if you proceed within 30 days.",
+    q: "Why is Discovery $500 normally — and free for founding customers?",
+    a: "Free audits attract tire-kickers and reward fast, generic templates, so we list Discovery at $500: it pays for a real week studying your business — both the customer-facing side and the operational side — and you walk away with a written audit, a prioritized roadmap, and a fixed-price proposal you can keep, even if you never engage us further. As a founding-customer promotion, while spots remain open we waive the $500 entirely — same audit, same deliverables, no payment up front. Once founding spots are filled the $500 list price returns; we still refund it if the audit alone isn't worth it, and credit it 100% toward Build if you proceed within 30 days.",
   },
   {
     q: "How does founding-customer pricing work?",
