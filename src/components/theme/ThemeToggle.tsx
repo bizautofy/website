@@ -12,11 +12,15 @@ interface ThemeToggleProps {
 /**
  * Sun/moon button that flips between light and dark.
  *
- * Hydration-safe without the usual `mounted` flag: on the server (and on
- * first client render before next-themes' init effect runs) `resolvedTheme`
- * is `undefined`, so we treat that as the dark default. Once next-themes
- * resolves the user's stored / system preference, the component re-renders
- * with the correct state and the icon swap animates via CSS.
+ * Why no `mounted` flag: hiding the toggle until mount creates its own visible
+ * pop. Instead we render the dark-default variant on the server and let the
+ * client re-render with the resolved theme after hydration. The `className`
+ * on the button and on each icon WILL differ between server and client when
+ * the resolved theme is "light", so we mark all three nodes with
+ * `suppressHydrationWarning` — this is exactly the kind of "intentional
+ * server/client divergence" that prop is designed for. Note that
+ * `suppressHydrationWarning` does NOT cascade to children, so each icon
+ * needs the prop directly even though the parent button has it too.
  */
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { resolvedTheme, setTheme } = useTheme();
@@ -39,6 +43,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     >
       <Sun
         aria-hidden="true"
+        suppressHydrationWarning
         className={cn(
           "absolute h-[18px] w-[18px] transition-all duration-300",
           isDark
@@ -48,6 +53,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       />
       <Moon
         aria-hidden="true"
+        suppressHydrationWarning
         className={cn(
           "absolute h-[18px] w-[18px] transition-all duration-300",
           isDark

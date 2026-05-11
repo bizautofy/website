@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 type Plan = "general" | "discovery" | "build" | "run" | "custom" | "founding";
 const PLANS: Array<{ value: Plan; label: string }> = [
   { value: "general", label: "General inquiry" },
-  { value: "discovery", label: "Book a Discovery & Audit ($500)" },
+  { value: "discovery", label: "Book a Discovery & Audit (free for founding customers)" },
   { value: "build", label: "Talk about a Build" },
   { value: "run", label: "Retainer / ongoing Run support" },
   { value: "custom", label: "Custom scope" },

@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Custom-built means custom-priced. Discovery is the only fixed price — $500, refundable into Build. Everything else is scoped from your audit, in writing, before any further work begins.",
+    "Custom-built means custom-priced. Discovery is $500 — free for founding customers while spots are open, refundable into Build for everyone else. Build and Run are scoped from your audit, in writing, before any further work begins.",
 };
 
 export default function PricingPage() {
@@ -147,12 +147,28 @@ export default function PricingPage() {
                   <span className="font-display text-5xl font-bold tracking-tight gradient-text">
                     {pricingDiscovery.price}
                   </span>
+                  {pricingDiscovery.regularPrice && (
+                    <span
+                      className="text-xl font-semibold text-muted-foreground/60 line-through decoration-foreground/30 decoration-2"
+                      aria-label={`Normally ${pricingDiscovery.regularPrice}`}
+                    >
+                      {pricingDiscovery.regularPrice}
+                    </span>
+                  )}
                   <span className="text-sm text-muted-foreground">
                     {pricingDiscovery.priceNote}
                   </span>
                 </div>
                 <p className="mt-1 text-xs uppercase tracking-[0.18em] text-muted-foreground/80">
                   {pricingDiscovery.duration}
+                  {pricingDiscovery.regularPriceNote && (
+                    <>
+                      <span className="mx-2 text-muted-foreground/40">·</span>
+                      <span className="normal-case tracking-normal text-muted-foreground/70">
+                        {pricingDiscovery.regularPriceNote}
+                      </span>
+                    </>
+                  )}
                 </p>
 
                 <p className="mt-6 max-w-xl text-base leading-relaxed text-foreground/90">
@@ -310,8 +326,8 @@ export default function PricingPage() {
                 Ready to see what your business could automate?
               </h3>
               <p className="mt-2 max-w-md text-sm text-muted-foreground">
-                Discovery is one week. $500 — refundable into Build.
-                No shrink-wrapped tiers, no surprise totals.
+                Discovery is one week. Free for founding customers — normally
+                $500. No shrink-wrapped tiers, no surprise totals.
               </p>
             </div>
             <Button asChild size="lg" variant="primary">
