@@ -448,20 +448,27 @@ function BandCard({ band, delay }: BandCardProps) {
       )}
     >
       {/*
-        Badges are anchored to the card's top-left corner, in line with
-        the icon below them (both at the `p-8` 32px inset). This reads
-        as a deliberate "ribbon tag" pinned to the card rather than a
-        floating label, and avoids the cross-card alignment issues that
-        come with horizontally centering badges of different widths.
+        Badges are positioned so their TEXT (not their visible left edge)
+        aligns horizontally with the icon below.
+
+        Math:
+          Card padding-left:           p-8        = 32px → icon-left
+          Badge internal pre-text:     px-3 (12) + Sparkles w-3 (12) + gap-1.5 (6) = 30px
+          Required wrapper offset:     32px − 30px = 2px  → left-[2px]
+
+        Result: the "F" in "Free —" / the "M" in "Most common" sits at
+        the same x as the icon's left edge directly below. The visible
+        badge pill sits flush near the card's top-left corner; the
+        sparkles icon visually leads into the text column.
       */}
       {isFoundingPromo ? (
-        <span className="absolute -top-3 left-8">
+        <span className="absolute -top-3 left-[2px]">
           <Badge variant="accent" className="whitespace-nowrap">
             <Sparkles className="h-3 w-3" /> Free — founding customers
           </Badge>
         </span>
       ) : band.highlighted ? (
-        <span className="absolute -top-3 left-8">
+        <span className="absolute -top-3 left-[2px]">
           <Badge variant="default" className="whitespace-nowrap">
             <Sparkles className="h-3 w-3" /> Most common
           </Badge>
