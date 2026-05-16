@@ -450,7 +450,7 @@ function BandCard({ band, delay }: BandCardProps) {
       {isFoundingPromo ? (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2">
           <Badge variant="accent" className="whitespace-nowrap">
-            <Sparkles className="h-3 w-3" /> Founding · Free
+            <Sparkles className="h-3 w-3" /> Free — founding customers
           </Badge>
         </span>
       ) : band.highlighted ? (
