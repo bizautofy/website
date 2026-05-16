@@ -429,15 +429,21 @@ interface BandCardProps {
 function BandCard({ band, delay }: BandCardProps) {
   const Icon = band.icon;
   const isFoundingPromo = Boolean(band.founding);
+  // NOTE: we intentionally do NOT use a negative-margin lift (lg:-mt-4) on the
+  // emphasised cards. Lifting only some cards in a CSS Grid row, combined with
+  // framer-motion's per-card stagger and inline transforms, produced visible
+  // badge misalignment between the "Founding · Free" and "Most common" labels
+  // on adjacent cards. All three cards now share the same top Y; emphasis
+  // comes from the accent/primary ring + colored badge instead.
   return (
     <AnimatedSection
       delay={delay}
       className={cn(
         "relative flex h-full flex-col rounded-3xl border bg-card/40 p-8 backdrop-blur-sm transition-all duration-300",
         isFoundingPromo
-          ? "border-accent/40 ring-1 ring-accent/20 lg:-mt-4 lg:mb-4"
+          ? "border-accent/40 ring-1 ring-accent/20"
           : band.highlighted
-            ? "border-primary/40 ring-1 ring-primary/20 lg:-mt-4 lg:mb-4"
+            ? "border-primary/40 ring-1 ring-primary/20"
             : "border-foreground/10"
       )}
     >
