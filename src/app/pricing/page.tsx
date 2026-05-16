@@ -447,44 +447,43 @@ function BandCard({ band, delay }: BandCardProps) {
             : "border-foreground/10"
       )}
     >
-      {/*
-        Badges are positioned so their TEXT (not their visible left edge)
-        aligns horizontally with the icon below.
-
-        Math:
-          Card padding-left:           p-8        = 32px → icon-left
-          Badge internal pre-text:     px-3 (12) + Sparkles w-3 (12) + gap-1.5 (6) = 30px
-          Required wrapper offset:     32px − 30px = 2px  → left-[2px]
-
-        Result: the "F" in "Free —" / the "M" in "Most common" sits at
-        the same x as the icon's left edge directly below. The visible
-        badge pill sits flush near the card's top-left corner; the
-        sparkles icon visually leads into the text column.
-      */}
-      {isFoundingPromo ? (
-        <span className="absolute -top-3 left-[2px]">
-          <Badge variant="accent" className="whitespace-nowrap">
-            <Sparkles className="h-3 w-3" /> Free — founding customers
-          </Badge>
-        </span>
-      ) : band.highlighted ? (
-        <span className="absolute -top-3 left-[2px]">
-          <Badge variant="default" className="whitespace-nowrap">
-            <Sparkles className="h-3 w-3" /> Most common
-          </Badge>
-        </span>
-      ) : null}
-
       <div>
-        <div
-          className={cn(
-            "inline-flex h-10 w-10 items-center justify-center rounded-lg ring-1 ring-inset",
-            isFoundingPromo
-              ? "bg-accent/15 text-accent ring-accent/30"
-              : "bg-primary/15 text-primary ring-primary/30"
-          )}
-        >
-          <Icon className="h-4 w-4" aria-hidden />
+        {/*
+          Icon and promo badge share the same horizontal row, both inside
+          the card's p-8 padding. Earlier iterations tried to float the
+          badge as a ribbon-tag above the card top, but that created two
+          problems users immediately flagged: (1) the badge visually
+          overlapped/protruded past the card edge, and (2) the badge sat
+          stacked vertically above the icon rather than next to it, which
+          made it read as a disconnected floating label.
+
+          Layout details:
+            - flex items-center gap-3   → icon and badge baseline-aligned on Y axis
+            - flex-none on the icon     → icon keeps its 40×40 square, never shrinks
+            - badge has whitespace-nowrap so single-line wrapping is preserved
+              even in the narrowest grid column the layout uses
+        */}
+        <div className="flex items-center gap-3">
+          <div
+            className={cn(
+              "inline-flex h-10 w-10 flex-none items-center justify-center rounded-lg ring-1 ring-inset",
+              isFoundingPromo
+                ? "bg-accent/15 text-accent ring-accent/30"
+                : "bg-primary/15 text-primary ring-primary/30"
+            )}
+          >
+            <Icon className="h-4 w-4" aria-hidden />
+          </div>
+
+          {isFoundingPromo ? (
+            <Badge variant="accent" className="whitespace-nowrap">
+              <Sparkles className="h-3 w-3" /> Free — founding customers
+            </Badge>
+          ) : band.highlighted ? (
+            <Badge variant="default" className="whitespace-nowrap">
+              <Sparkles className="h-3 w-3" /> Most common
+            </Badge>
+          ) : null}
         </div>
         <h3 className="mt-5 font-display text-xl font-semibold tracking-tight">
           {band.name}
