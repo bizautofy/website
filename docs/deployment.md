@@ -58,7 +58,7 @@ This document describes the *current* live architecture and the steps to rebuild
 Two zones in Cloudflare:
 
 - **`bizautofy.com`** — canonical, serves the site. Nameservers `adel.ns.cloudflare.com`, `dylan.ns.cloudflare.com` (set at Squarespace).
-- **`bizzyfy.com`** — defensive brand domain, 308-redirects to `https://bizautofy.com` (apex; Vercel-managed redirect). Cloudflare assigned its own nameserver pair (each zone gets a distinct pair); update §3.12 if you need to know the exact values. Set at Squarespace.
+- **`bizzyfy.com`** — defensive brand domain, 308-redirects to `https://bizautofy.com` (apex; Vercel-managed redirect). Nameservers `adel.ns.cloudflare.com`, `dylan.ns.cloudflare.com` — Cloudflare happened to assign the same NS pair as `bizautofy.com` (this is not guaranteed; see §3.12 step 2). Set at Squarespace.
 
 ### Zone records on Cloudflare (`bizautofy.com`)
 
@@ -336,7 +336,7 @@ This was first done for `bizzyfy.com`. Replicate verbatim for any future redirec
 **Sequence — do not skip ordering, each phase depends on the previous one propagating:**
 
 1. **Cloudflare → Add a Site** → enter `<new-domain>` → Free plan → Continue. Cloudflare imports whatever DNS the registrar had — ignore for now.
-2. Cloudflare assigns **two nameservers** (a distinct pair per zone — they will not match `bizautofy.com`'s). Copy both.
+2. Cloudflare assigns **two nameservers**. They may or may not match another zone in your account — Cloudflare's NS-pair assignment depends on internal load balancing at sign-up time. (For example, `bizzyfy.com` happened to land on `adel/dylan.ns.cloudflare.com`, same as `bizautofy.com`; new zones in the same account can just as easily get a different pair.) Copy whatever Cloudflare actually shows you for this zone — do not assume.
 3. **Squarespace → Domains → `<new-domain>` → DNS → Nameservers** → "Use custom nameservers" → paste the two Cloudflare values → Save. Propagation 10–60 min.
 4. Verify NS propagation:
    ```bash
