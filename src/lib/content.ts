@@ -287,7 +287,7 @@ export const howItWorks: Step[] = [
   {
     number: "02",
     title: "Build",
-    body: "We execute the proposal at the price we quoted. Modern site, GBP, customer-facing automations, back-office integrations — exactly what we scoped, on a timeline we agreed at kickoff. Most builds ship in 2–6 weeks. 50% on kickoff, 50% on handoff.",
+    body: "We execute the proposal at the price we quoted. Modern site, GBP, customer-facing automations, back-office integrations — exactly what we scoped, on a timeline we agreed at kickoff. Most builds ship in 2–6 weeks. Founding customers get the Front-of-house essentials Build free (normally $2,000–$4,000) while spots are open — you cover only third-party pass-throughs. Deeper Build bands (Customer-facing automation, Total automation) are quoted from Discovery; 50% on kickoff, 50% on handoff.",
     bullets: [
       "Modern site, GBP refresh, review and CRM flows",
       "Booking, payments, invoicing, and AI chat",
@@ -299,7 +299,7 @@ export const howItWorks: Step[] = [
   {
     number: "03",
     title: "Run",
-    body: "After handoff we monitor performance, ship improvements monthly, and send a weekly dashboard combining customer and ops metrics. Founding-customer rate locks at signing for 24 months and is capped to U.S. CPI forever after — no surprise hikes, ever.",
+    body: "After handoff we monitor performance, ship improvements monthly, and send a weekly dashboard combining customer and ops metrics. Founding customers get Presence Care free for the first 12 months (normally $99–$199/mo); months 13–24 lock at the founding-customer band rate, and CPI cap applies forever after — no surprise hikes, ever.",
     bullets: [
       "Monthly improvement sprint (1–2 ships / month)",
       "Quarterly strategy review",
@@ -354,13 +354,18 @@ export const stats: Stat[] = [
 
 export const foundingProgram = {
   badge: "Founding customer",
-  title: "Be one of our first 10. Lock the rate that holds.",
-  body: "Bizautofy is new on purpose. We are taking on a small, hand-picked group of founding customers in exchange for honest feedback and (eventually) a public case study. In return, your retainer rate is locked at signing for 24 months, capped at inflation forever after, and your original scope stays at the price you signed at — for as long as we run together.",
+  title: "Be one of our first 10. Get launched for free.",
+  body: "Bizautofy is new on purpose. We are taking on a small, hand-picked group of founding customers in exchange for honest feedback and (eventually) a public case study. In return: Discovery, the Front-of-house essentials Build, and your first 12 months of Presence Care are all free — you cover only the third-party pass-throughs we don't control (domain, SMS if used). Your retainer rate then locks at signing for 24 months, capped at inflation forever after, and your original scope stays at the price you signed at for as long as we run together.",
   perks: [
     {
-      icon: Search,
-      title: "Free Discovery audit ($500 value)",
-      body: "Founding customers pay nothing for the Discovery & Automation Audit while spots are open. Same week-long shadow, same written audit, same fixed-price proposal — yours to keep, even if you never engage us further.",
+      icon: Sparkles,
+      title: "Free to launch — Discovery + FOH essentials Build",
+      body: "Discovery audit ($500 normally) and the Front-of-house essentials Build ($2,000–$4,000 normally) — both $0 for founding customers while spots remain open. You cover only third-party pass-throughs.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Presence Care free for 12 months",
+      body: "Hosting, monitoring, monthly updates, GBP posts, summary email — normally $99–$199/mo, free for your first year. Months 13–24 lock at the founding rate; CPI cap thereafter.",
     },
     {
       icon: Wallet,
@@ -368,7 +373,7 @@ export const foundingProgram = {
       body: "The retainer rate you sign at is the rate you pay for two full years. No surprise hikes, no fine print.",
     },
     {
-      icon: ShieldCheck,
+      icon: LineChart,
       title: "CPI cap forever after",
       body: "After 24 months we adjust only by U.S. BLS Urban CPI. Never more. We put it in the contract.",
     },
@@ -434,6 +439,20 @@ export interface PricingBand {
   bestFor: string;
   includes: string[];
   highlighted?: boolean;
+  /**
+   * Optional founding-customer promotion. When present, the card shows the
+   * promo price (e.g. "Free") with the `priceRange` strikethrough and a
+   * sub-note. Mirrors the pattern used for Discovery (`pricingDiscovery`).
+   *
+   * Once founding spots fill, delete the `founding` block here to revert
+   * the card to standard pricing — no other code changes required.
+   */
+  founding?: {
+    price: string;
+    note: string;
+    detail?: string;
+    thirdPartyNote?: string;
+  };
 }
 
 export const pricingBuild: PricingBand[] = [
@@ -453,6 +472,14 @@ export const pricingBuild: PricingBand[] = [
       "Basic review request flow (SMS or email)",
       "Privacy-friendly analytics, no cookie banners",
     ],
+    founding: {
+      price: "Free",
+      note: "for founding customers — limited spots",
+      detail:
+        "One-time Build at $0 while founding spots remain open. Yours to keep when we hand off, regardless of whether you continue with Run.",
+      thirdPartyNote:
+        "You cover third-party pass-throughs only — domain renewal, SMS via Twilio if used, and any optional paid directory listings. Full breakdown below.",
+    },
   },
   {
     slug: "customer-automation",
@@ -510,6 +537,14 @@ export const pricingRun: PricingBand[] = [
       "Monthly summary email with the numbers that matter",
       "Real human support, same-day reply",
     ],
+    founding: {
+      price: "Free",
+      note: "first 12 months for founding customers",
+      detail:
+        "Months 1–12 at $0 while founding spots remain open. Months 13–24 lock at the founding-customer band rate (within your standard $99–$199/mo range) for the rest of the 24-month rate-lock window; CPI cap applies thereafter — same promise as everything else founding.",
+      thirdPartyNote:
+        "You cover third-party pass-throughs only — domain renewal, optional SMS via Twilio, and Vercel hosting upgrade if traffic outgrows the free tier (rare). Full breakdown below.",
+    },
   },
   {
     slug: "customer-operations",
@@ -555,9 +590,47 @@ export const pricingPrinciples = {
   title: "Custom-built means custom-priced.",
   body: [
     "Every small business runs on a different stack. Square versus Toast. QuickBooks versus Xero. One location versus three. Four employees versus eighteen. The integration depth — and the price — depends entirely on what we find inside the business, not on what tier you click on a website.",
-    "So we sell the audit, not the answer. Discovery is the only fixed price on this page — $500 normally, free for founding customers while spots remain open. From there, you get a written, fixed-price proposal for Build and Run. You always know the number before any further work begins.",
+    "So we sell the audit, not the answer. While founding spots remain open, three things are free: Discovery ($500 normally), the Front-of-house essentials Build ($2,000–$4,000 normally), and Presence Care for the first 12 months ($99–$199/mo normally). You cover only third-party pass-throughs — domain, SMS if used, the occasional paid directory listing. Everything beyond Front-of-house essentials (Customer-facing automation, Total automation, the deeper Run bands) gets a written, fixed-price proposal in Discovery. You always know the number before any further work begins.",
     "The ranges above are real — they cover most engagements at our practice scale. If your situation falls outside them, we will tell you in the audit, with the math to back it.",
   ],
+} as const;
+
+// ---------------------------------------------------------------------------
+// Founding-customer pass-throughs
+// What "free" actually covers vs. what stays the owner's responsibility.
+// Used by the pricing page callout and by the FAQ. Numbers are conservative
+// estimates; the Discovery audit gives the customer-specific figure.
+// ---------------------------------------------------------------------------
+
+export const foundingPassThroughs = {
+  eyebrow: "What 'free' covers — and what stays yours",
+  title: "Our work is free. Third-party fees stay third-party.",
+  intro:
+    "While founding spots remain open, Bizautofy's work on Discovery, Front-of-house essentials Build, and the first 12 months of Presence Care is $0. You still cover the third-party services we don't control. There are four — and most engagements only hit two of them.",
+  items: [
+    {
+      label: "Domain registration / renewal",
+      cost: "~$12–25 / year",
+      note: "Paid to your registrar (Squarespace, Namecheap, Cloudflare, etc.). If you already own your domain, this is just your existing renewal — nothing new.",
+    },
+    {
+      label: "SMS messaging (Twilio)",
+      cost: "~$0.0075 per US SMS",
+      note: "Only if your Build includes review request SMS, AI chat over SMS, or appointment reminders by text. Email-only flows skip this entirely. Typical Front-of-house essentials customer: $0–$15 / mo.",
+    },
+    {
+      label: "Paid directory listings",
+      cost: "$0–$200 one-time, typical",
+      note: "Most local citations are free. A few (Yelp Enhanced, BBB, niche industry directories) charge listing fees. We always tell you before paying any of these — they're opt-in.",
+    },
+    {
+      label: "Hosting overage",
+      cost: "$0 in ~95% of cases",
+      note: "Vercel's free Hobby tier covers small-business traffic. If you outgrow it (rare for FOH essentials), the Pro upgrade is $20/mo paid directly to Vercel — your account, your bill.",
+    },
+  ],
+  footer:
+    "Everything else — design, build, deploy, GBP rebuild, monitoring, support, monthly updates, the founder's time — is on us. The Discovery audit gives you a specific pass-through estimate for your business before you sign anything.",
 } as const;
 
 export const foundingGuarantee = {
@@ -565,6 +638,8 @@ export const foundingGuarantee = {
   title: "The price you sign at is the price that holds.",
   bullets: [
     "Discovery is free for founding customers — a $500 audit, on us, while spots are open.",
+    "Front-of-house essentials Build is free for founding customers — normally $2,000–$4,000. You cover only third-party pass-throughs (domain, SMS if used).",
+    "Presence Care is free for your first 12 months — normally $99–$199/mo. After month 12, your rate locks at the founding-customer band rate.",
     "Your retainer rate is locked at signing for 24 months — no rate hikes, ever.",
     "After 24 months, we adjust only by U.S. BLS Urban CPI. Never more. It is in the contract.",
     "Your original scope stays at your original price for as long as we run together.",
@@ -600,8 +675,12 @@ export const faqs: Faq[] = [
     a: "Free audits attract tire-kickers and reward fast, generic templates, so we list Discovery at $500: it pays for a real week studying your business — both the customer-facing side and the operational side — and you walk away with a written audit, a prioritized roadmap, and a fixed-price proposal you can keep, even if you never engage us further. As a founding-customer promotion, while spots remain open we waive the $500 entirely — same audit, same deliverables, no payment up front. Once founding spots are filled the $500 list price returns; we still refund it if the audit alone isn't worth it, and credit it 100% toward Build if you proceed within 30 days.",
   },
   {
+    q: "What exactly is free for founding customers? And what do I still pay for?",
+    a: "Three things are free while founding spots remain open: (1) the Discovery audit (normally $500), (2) the Front-of-house essentials Build — modern site, GBP rebuild, citation cleanup, review setup, privacy-friendly analytics (normally $2,000–$4,000), and (3) the first 12 months of Presence Care — hosting, monitoring, monthly content/GBP updates, summary email, human support (normally $99–$199/mo). What you still pay for is the third-party services we don't control: your domain registration/renewal (~$12–25/yr at your registrar), SMS messages if your build uses them (~$0.0075 per US SMS via Twilio — most owners $0–$15/mo), the occasional opt-in paid directory listing during citation cleanup ($0–$200 one-time typical), and Vercel hosting only if your traffic outgrows the free tier (rare; $20/mo direct to Vercel). Deeper Build bands (Customer-facing automation, Total automation) and deeper Run bands (Customer Operations, Full Operations) are still custom-quoted from your Discovery audit — at the founding-customer rate. We spell out the exact pass-through estimate for your business in Discovery before you sign anything.",
+  },
+  {
     q: "How does founding-customer pricing work?",
-    a: "Whatever retainer rate you sign at is locked for 24 months — no hikes. After 24 months, we adjust only by U.S. BLS Urban CPI, never more. Your original scope stays at the original price for as long as we run together. If your business grows and you add automations, the new work is quoted at then-current rates — but you always pay the founding-customer rate for that band. Cancel any time with 30 days' notice.",
+    a: "While founding spots are open: Discovery is free, the Front-of-house essentials Build is free, and Presence Care is free for your first 12 months — you cover only third-party pass-throughs. Whatever retainer rate you sign at then locks for 24 months — no hikes. After 24 months we adjust only by U.S. BLS Urban CPI, never more. Your original scope stays at the original price for as long as we run together. If your business grows and you add deeper automations (Customer-facing automation, Total automation, deeper Run bands), the new work is quoted at then-current rates — but you always pay the founding-customer rate for that band. Cancel any time with 30 days' notice.",
   },
   {
     q: "Do I have to switch tools? I already use Square / Toast / QuickBooks / Acuity.",

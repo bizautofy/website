@@ -18,6 +18,7 @@ import {
   pricingRun,
   pricingPrinciples,
   foundingGuarantee,
+  foundingPassThroughs,
   faqs,
   type PricingBand,
 } from "@/lib/content";
@@ -26,7 +27,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Custom-built means custom-priced. Discovery is $500 — free for founding customers while spots are open, refundable into Build for everyone else. Build and Run are scoped from your audit, in writing, before any further work begins.",
+    "Founding customers get launched for free: Discovery ($500 normally), Front-of-house essentials Build ($2,000–$4,000 normally), and the first 12 months of Presence Care ($99–$199/mo normally) — all $0 while spots remain open. You cover only third-party pass-throughs (domain, SMS if used). Deeper bands quoted from your audit, in writing.",
 };
 
 export default function PricingPage() {
@@ -267,6 +268,51 @@ export default function PricingPage() {
       </Section>
 
       {/* ------------------------------------------------------------ */}
+      {/* Founding-customer pass-throughs                              */}
+      {/* What "free" covers vs. what stays the customer's. Sits right */}
+      {/* below the Build/Run grids so the promo and the caveat are    */}
+      {/* never separated in the reader's eye.                         */}
+      {/* ------------------------------------------------------------ */}
+      <Section spacing="tight">
+        <Container size="narrow">
+          <AnimatedSection className="rounded-3xl border border-accent/30 bg-card/40 p-8 backdrop-blur-sm sm:p-10">
+            <Eyebrow>{foundingPassThroughs.eyebrow}</Eyebrow>
+            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+              {foundingPassThroughs.title}
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-foreground/85">
+              {foundingPassThroughs.intro}
+            </p>
+
+            <ul className="mt-8 space-y-4">
+              {foundingPassThroughs.items.map((item) => (
+                <li
+                  key={item.label}
+                  className="grid gap-2 rounded-2xl border border-foreground/10 bg-background/40 p-5 sm:grid-cols-[1fr_auto] sm:items-baseline"
+                >
+                  <div>
+                    <p className="font-semibold tracking-tight text-foreground">
+                      {item.label}
+                    </p>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {item.note}
+                    </p>
+                  </div>
+                  <span className="inline-flex items-center self-start rounded-full bg-accent/15 px-3 py-1 font-mono text-xs font-medium text-accent ring-1 ring-inset ring-accent/30 sm:self-auto">
+                    {item.cost}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-6 text-sm leading-relaxed text-foreground/85">
+              {foundingPassThroughs.footer}
+            </p>
+          </AnimatedSection>
+        </Container>
+      </Section>
+
+      {/* ------------------------------------------------------------ */}
       {/* Why we don't quote shrink-wrapped totals                     */}
       {/* ------------------------------------------------------------ */}
       <Section>
@@ -326,8 +372,9 @@ export default function PricingPage() {
                 Ready to see what your business could automate?
               </h3>
               <p className="mt-2 max-w-md text-sm text-muted-foreground">
-                Discovery is one week. Free for founding customers — normally
-                $500. No shrink-wrapped tiers, no surprise totals.
+                Founding customers launch free: Discovery, Front-of-house
+                essentials Build, and your first 12 months of Presence Care —
+                all $0 while spots are open. Third-party pass-throughs only.
               </p>
             </div>
             <Button asChild size="lg" variant="primary">
@@ -381,26 +428,42 @@ interface BandCardProps {
 
 function BandCard({ band, delay }: BandCardProps) {
   const Icon = band.icon;
+  const isFoundingPromo = Boolean(band.founding);
   return (
     <AnimatedSection
       delay={delay}
       className={cn(
         "relative flex h-full flex-col rounded-3xl border bg-card/40 p-8 backdrop-blur-sm transition-all duration-300",
-        band.highlighted
-          ? "border-primary/40 ring-1 ring-primary/20 lg:-mt-4 lg:mb-4"
-          : "border-foreground/10"
+        isFoundingPromo
+          ? "border-accent/40 ring-1 ring-accent/20 lg:-mt-4 lg:mb-4"
+          : band.highlighted
+            ? "border-primary/40 ring-1 ring-primary/20 lg:-mt-4 lg:mb-4"
+            : "border-foreground/10"
       )}
     >
-      {band.highlighted && (
+      {isFoundingPromo ? (
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2">
+          <Badge variant="accent">
+            <Sparkles className="h-3 w-3" /> Free — founding customers
+          </Badge>
+        </span>
+      ) : band.highlighted ? (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2">
           <Badge variant="default">
             <Sparkles className="h-3 w-3" /> Most common
           </Badge>
         </span>
-      )}
+      ) : null}
 
       <div>
-        <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary ring-1 ring-inset ring-primary/30">
+        <div
+          className={cn(
+            "inline-flex h-10 w-10 items-center justify-center rounded-lg ring-1 ring-inset",
+            isFoundingPromo
+              ? "bg-accent/15 text-accent ring-accent/30"
+              : "bg-primary/15 text-primary ring-primary/30"
+          )}
+        >
           <Icon className="h-4 w-4" aria-hidden />
         </div>
         <h3 className="mt-5 font-display text-xl font-semibold tracking-tight">
@@ -408,14 +471,43 @@ function BandCard({ band, delay }: BandCardProps) {
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">{band.tagline}</p>
 
-        <div className="mt-6 space-y-1">
-          <div className="font-display text-3xl font-bold tracking-tight gradient-text">
-            {band.priceRange}
+        {band.founding ? (
+          <div className="mt-6 space-y-2">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="font-display text-3xl font-bold tracking-tight gradient-text">
+                {band.founding.price}
+              </span>
+              <span
+                className="text-base font-semibold text-muted-foreground/60 line-through decoration-foreground/30 decoration-2"
+                aria-label={`Normally ${band.priceRange}`}
+              >
+                {band.priceRange}
+              </span>
+            </div>
+            <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground/80">
+              {band.founding.note}
+            </div>
+            {band.founding.detail && (
+              <p className="pt-1 text-xs leading-relaxed text-foreground/75">
+                {band.founding.detail}
+              </p>
+            )}
+            {band.founding.thirdPartyNote && (
+              <p className="text-xs leading-relaxed text-muted-foreground/80">
+                {band.founding.thirdPartyNote}
+              </p>
+            )}
           </div>
-          <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground/80">
-            {band.rangeLabel}
+        ) : (
+          <div className="mt-6 space-y-1">
+            <div className="font-display text-3xl font-bold tracking-tight gradient-text">
+              {band.priceRange}
+            </div>
+            <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground/80">
+              {band.rangeLabel}
+            </div>
           </div>
-        </div>
+        )}
 
         <p className="mt-5 text-sm leading-relaxed text-foreground/85">
           <span className="font-semibold text-foreground">Best for: </span>
@@ -426,7 +518,14 @@ function BandCard({ band, delay }: BandCardProps) {
       <ul className="mt-6 flex-1 space-y-2.5 border-t border-foreground/5 pt-6 text-sm text-foreground/90">
         {band.includes.map((f) => (
           <li key={f} className="flex items-start gap-3">
-            <span className="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-primary/15 text-primary">
+            <span
+              className={cn(
+                "mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full",
+                isFoundingPromo
+                  ? "bg-accent/15 text-accent"
+                  : "bg-primary/15 text-primary"
+              )}
+            >
               <Check className="h-3 w-3" />
             </span>
             <span>{f}</span>
