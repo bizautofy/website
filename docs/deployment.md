@@ -55,16 +55,12 @@ This document describes the *current* live architecture and the steps to rebuild
 
 ## 2. DNS reference (final state)
 
-Authoritative nameservers at Cloudflare:
+Two zones in Cloudflare:
 
-```
-adel.ns.cloudflare.com
-dylan.ns.cloudflare.com
-```
+- **`bizautofy.com`** — canonical, serves the site. Nameservers `adel.ns.cloudflare.com`, `dylan.ns.cloudflare.com` (set at Squarespace).
+- **`bizzyfy.com`** — defensive brand domain, 308-redirects to `https://bizautofy.com` (apex; Vercel-managed redirect). Nameservers `adel.ns.cloudflare.com`, `dylan.ns.cloudflare.com` — Cloudflare happened to assign the same NS pair as `bizautofy.com` (this is not guaranteed; see §3.12 step 2). Set at Squarespace.
 
-These are configured at the registrar (Squarespace).
-
-### Zone records on Cloudflare
+### Zone records on Cloudflare (`bizautofy.com`)
 
 | Type | Name | Content | Proxy | Purpose |
 | --- | --- | --- | --- | --- |
@@ -83,6 +79,17 @@ These are configured at the registrar (Squarespace).
 2. MX records can never be proxied. Cloudflare's HTTP proxy (orange cloud) does not handle SMTP.
 3. Apex A record must stay proxied (orange cloud) for security headers / WAF / DDoS to apply.
 4. The `_domainkey` parent (without `resend.` prefix) is **not** used. Resend keys it under `resend._domainkey`. Do not put a placeholder DKIM record at `_domainkey` — multiple DKIM selectors in the same parent confuses some receivers.
+
+### Zone records on Cloudflare (`bizzyfy.com`)
+
+Redirect-only zone. No email, no app — just two records so Vercel can serve the 308 redirect.
+
+| Type | Name | Content | Proxy | Purpose |
+| --- | --- | --- | --- | --- |
+| `A` | `bizzyfy.com` (i.e. `@`) | `76.76.21.21` | Proxied | Apex points at Vercel's edge IP; Vercel issues the 308 |
+| `CNAME` | `www` | `cname.vercel-dns.com` | Proxied | `www.bizzyfy.com` also points at Vercel for its own 308 |
+
+No MX/TXT/SPF/DKIM. If you ever want `hello@bizzyfy.com` to work, add Cloudflare Email Routing + a separate Resend domain (mirror of §3.10–§3.11 against this zone). For a defensive redirect domain, skip it.
 
 ---
 
@@ -320,6 +327,46 @@ Once Resend is sending outbound, set up inbound so anyone emailing `hello@bizaut
    - Catch-all → Send to → your Gmail. (Catches typos, `info@`, `support@`, etc.)
 5. Test by emailing `hello@bizautofy.com` from another account; it should reach Gmail within ~30 sec.
 
+### 3.12 Adding a secondary redirect-only domain (`bizzyfy.com`)
+
+When you acquire a brand-variant domain (typo defence, alternate spelling, sister brand) and want all traffic to land on the canonical site, the cleanest pattern is **registrar → Cloudflare zone → Vercel domain set to "Redirect to"**. The redirect itself runs on Vercel's edge (Let's Encrypt cert, 308 Permanent Redirect by default) so there's no app code or worker to maintain.
+
+This was first done for `bizzyfy.com`. Replicate verbatim for any future redirect-only domain.
+
+**Sequence — do not skip ordering, each phase depends on the previous one propagating:**
+
+1. **Cloudflare → Add a Site** → enter `<new-domain>` → Free plan → Continue. Cloudflare imports whatever DNS the registrar had — ignore for now.
+2. Cloudflare assigns **two nameservers**. They may or may not match another zone in your account — Cloudflare's NS-pair assignment depends on internal load balancing at sign-up time. (For example, `bizzyfy.com` happened to land on `adel/dylan.ns.cloudflare.com`, same as `bizautofy.com`; new zones in the same account can just as easily get a different pair.) Copy whatever Cloudflare actually shows you for this zone — do not assume.
+3. **Squarespace → Domains → `<new-domain>` → DNS → Nameservers** → "Use custom nameservers" → paste the two Cloudflare values → Save. Propagation 10–60 min.
+4. Verify NS propagation:
+   ```bash
+   dig +short NS <new-domain>
+   ```
+   Don't proceed until Cloudflare's dashboard flips the zone to **Active**.
+5. Cloudflare → zone → DNS → Records. **Delete** all imported A/AAAA/CNAME (Squarespace's `198.x` IPs, `_domainconnect`, etc.). **Add** exactly:
+   - `A` `@` → `76.76.21.21` (Proxied)
+   - `CNAME` `www` → `cname.vercel-dns.com` (Proxied)
+6. Cloudflare → SSL/TLS → **Full (strict)**. Edge Certificates → Always Use HTTPS **On**, Automatic HTTPS Rewrites **On**, Min TLS Version **TLS 1.2**.
+
+   > **Gotcha:** flipping to Full (strict) before Vercel has issued the cert can briefly return 526. Tolerable for 1–2 min; if it persists past Phase 7, Vercel hasn't picked up the DNS yet.
+
+7. **Vercel → `website` project → Settings → Domains → Add Domain** → `<new-domain>`. Choose **Redirect to an existing domain** → `bizautofy.com` (apex), status code **308 Permanent Redirect**. Repeat for `www.<new-domain>` (same redirect target). Vercel auto-provisions Let's Encrypt certs once it sees the DNS.
+
+   > **Pick the redirect target deliberately.** Either `bizautofy.com` (apex) or `www.bizautofy.com` works. We use the apex because both apex and www currently serve the site directly (no second hop). If the apex→www redirect is ever re-enabled at Vercel, switch this target to `www.bizautofy.com` to avoid a double redirect.
+8. Verify end-to-end:
+   ```bash
+   curl -sSI https://<new-domain>/ | grep -iE '^(HTTP|location|server)'
+   #   expect: HTTP/2 308 ... location: https://bizautofy.com/ ... server: cloudflare/Vercel
+   curl -sSIL https://<new-domain>/services | grep -iE '^(HTTP|location)'
+   #   expect: 308 -> location: https://bizautofy.com/services -> HTTP/2 200
+   ```
+
+**Why 308 and not 301:** functionally equivalent for browsers and SEO, but 308 strictly preserves the HTTP method (a POST stays POST), whereas 301 historically allowed clients to rewrite POST→GET. Vercel defaults to 308; both Google and Bing treat them as permanent.
+
+**Why "redirect" instead of serving the same content at both domains:** duplicate content splits SEO authority. Even with `rel="canonical"` tags, search engines occasionally surface the wrong domain. A single canonical Bizautofy domain and a permanent 308 from every alias is the unambiguous signal.
+
+**If you ever want to flip the redirect destination** (e.g., rebrand and make `bizzyfy.com` the canonical), do it in Vercel only — change the "Redirect to" target on each domain. DNS and Cloudflare configs stay identical.
+
 ---
 
 ## 4. Operational runbook
@@ -482,3 +529,4 @@ These are the issues that took meaningful debugging time.
 | Upstash console | https://console.upstash.com | (your Upstash account) |
 | Squarespace registrar | https://account.squarespace.com | (your Squarespace account) |
 | Status / public health checks | https://www.bizautofy.com (200) + https://bizautofy.com (307 → www) | — |
+| Redirect alias | https://bizzyfy.com + https://www.bizzyfy.com (both 308 → https://bizautofy.com) | Defensive brand domain; see §3.12 |
